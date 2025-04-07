@@ -1,1 +1,1 @@
-export * from './lib/angular-tofu/angular-tofu.component';
+export * from './lib/tofu-app-layout/tofu-app-layout.component';

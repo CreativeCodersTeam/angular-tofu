@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'lib-tofu-app-layout',
-  standalone: false,
+  // eslint-disable-next-line @angular-eslint/component-selector
+  selector: 'tofu-app-layout',
   templateUrl: './tofu-app-layout.component.html',
   styleUrl: './tofu-app-layout.component.scss'
 })
