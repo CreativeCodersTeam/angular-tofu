@@ -15,7 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@angular-tofu/angular-tofu": ["libs/angular-tofu/src/index.ts"]
+      "@cc-team/angular-tofu": ["libs/angular-tofu/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
