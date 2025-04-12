@@ -11,7 +11,7 @@ export default [
         {
           ignoredFiles: ['{projectRoot}/eslint.config.{js,cjs,mjs}'],
         },
-      ],
+      ]
     },
     languageOptions: {
       parser: await import('jsonc-eslint-parser'),
@@ -26,7 +26,7 @@ export default [
         'error',
         {
           type: 'attribute',
-          prefix: 'lib',
+          prefix: 'tofu',
           style: 'camelCase',
         },
       ],
@@ -34,7 +34,7 @@ export default [
         'error',
         {
           type: 'element',
-          prefix: 'lib',
+          prefix: 'tofu',
           style: 'kebab-case',
         },
       ],
