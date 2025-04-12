@@ -1,6 +1,11 @@
-# angular-tofu
+# angular-tofu (Angular Toolkit for UI)
 
-This library was generated with [Nx](https://nx.dev).
+Contains a collection of Angular components and utilities for building user interfaces.
+
+# Components
+
+## TofuAppLayoutComponent
+A basic layout component admin style applications. It provides a responsive layout with a header, sidebar, and content area.
 
 ## Running unit tests
 

@@ -1,1 +1,30 @@
-<p>tofu-app-layout works!</p>
+<mat-sidenav-container class="app-container" autosize>
+
+  <mat-sidenav #sidenav
+               [mode]="isSmallScreen ? 'over' : 'side'"
+               [opened]="!isSmallScreen">
+    <nav class="sidenav-content">
+      <a mat-list-item href="#">Home</a>
+      <a mat-list-item href="#">Einstellungen</a>
+      <a mat-list-item href="#">Profil</a>
+    </nav>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <mat-toolbar color="primary" class="app-toolbar">
+      <button mat-icon-button (click)="sidenav.toggle()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span class="app-title">{{ title }}</span>
+    </mat-toolbar>
+
+    <div class="app-content">
+      <div class="content-wrapper">
+        <!-- Beispielinhalt -->
+        <h2>Willkommen in der Angular Demo App</h2>
+        <p *ngFor="let item of [].constructor(30)">Dies ist Beispielinhalt zum Scrollen...</p>
+      </div>
+    </div>
+  </mat-sidenav-content>
+
+</mat-sidenav-container>
