@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { NxWelcomeComponent } from './nx-welcome.component';
 import { AngularTofuModule } from '@cc-team/angular-tofu';
 
 @Component({
-  imports: [NxWelcomeComponent, RouterModule, AngularTofuModule],
+  imports: [RouterModule, AngularTofuModule],
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',

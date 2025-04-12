@@ -2,7 +2,7 @@
   "name": "angular-tofu",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/angular-tofu/src",
-  "prefix": "lib",
+  "prefix": "tofu",
   "projectType": "library",
   "release": {
     "version": {
