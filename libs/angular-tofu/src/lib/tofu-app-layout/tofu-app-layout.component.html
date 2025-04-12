@@ -4,9 +4,18 @@
                [mode]="isSmallScreen ? 'over' : 'side'"
                [opened]="!isSmallScreen">
     <nav class="sidenav-content">
-      <a mat-list-item href="#">Home</a>
-      <a mat-list-item href="#">Einstellungen</a>
-      <a mat-list-item href="#">Profil</a>
+
+      <ng-container *ngFor="let entry of navEntries">
+        <ng-container *ngIf="menuItemTemplate; else defaultTemplate">
+          <ng-container *ngTemplateOutlet="menuItemTemplate; context: { $implicit: entry }"></ng-container>
+        </ng-container>
+        <ng-template #defaultTemplate>
+          <a mat-list-item [href]="entry.href">
+            {{ entry.title }}
+          </a>
+        </ng-template>
+      </ng-container>
+
     </nav>
   </mat-sidenav>
 
@@ -15,15 +24,16 @@
       <button mat-icon-button (click)="sidenav.toggle()">
         <mat-icon>menu</mat-icon>
       </button>
-      <span class="app-title">{{ title }}</span>
+      <span class="app-title">{{ appTitle }}</span>
     </mat-toolbar>
 
     <div class="app-content">
-      <div class="content-wrapper">
-        <!-- Beispielinhalt -->
-        <h2>Willkommen in der Angular Demo App</h2>
-        <p *ngFor="let item of [].constructor(30)">Dies ist Beispielinhalt zum Scrollen...</p>
-      </div>
+      <h2>Willkommen in der Angular Demo App</h2>
+      <p *ngFor="let item of [].constructor(30)">Dies ist Beispielinhalt zum Scrollen...</p>
+<!--      <div class="content-wrapper">-->
+<!--        <h2>Willkommen in der Angular Demo App</h2>-->
+<!--        <p *ngFor="let item of [].constructor(30)">Dies ist Beispielinhalt zum Scrollen...</p>-->
+<!--      </div>-->
     </div>
   </mat-sidenav-content>
 

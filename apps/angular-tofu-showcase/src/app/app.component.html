@@ -1,2 +1,9 @@
-<tofu-app-layout></tofu-app-layout>
+<tofu-app-layout appTitle="Angular Tofu Showcase" [navEntries]="navEntries" [menuItemTemplate]="customMenuItem">
+  <ng-template #customMenuItem let-entry>
+    <a mat-list-item (click)="entry.navigate()">
+      <mat-icon>link</mat-icon>
+      <span>{{ entry.title }}</span>
+    </a>
+  </ng-template>
+</tofu-app-layout>
 
