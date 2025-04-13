@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input, TemplateRef } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { TofuAppLayoutComponent, TofuNavigationEntry } from '@cc-team/angular-tofu';
 import { MatListItem } from '@angular/material/list';

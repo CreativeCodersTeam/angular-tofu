@@ -33,7 +33,7 @@ export class TofuAppLayoutComponent {
   navEntries: TofuNavigationEntry[] = [];
 
   @Input()
-  menuItemTemplate?: TemplateRef<unknown>;
+  menuItemTemplate?: TemplateRef<{ $implicit: TofuNavigationEntry }>;
 
   isSmallScreen = false;
 
@@ -44,4 +44,6 @@ export class TofuAppLayoutComponent {
         this.isSmallScreen = result.matches;
       });
   }
+
+  protected readonly TofuNavigationEntry = TofuNavigationEntry;
 }
