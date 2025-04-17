@@ -12,7 +12,8 @@ import {
   MatExpansionPanelHeader,
   MatExpansionPanelTitle,
 } from '@angular/material/expansion';
-import { RouterLink } from '@angular/router';
+import { RouterLink, RouterOutlet } from '@angular/router';
+import { MatTooltip } from '@angular/material/tooltip';
 
 @Component({
   selector: 'tofu-app-layout',
@@ -33,6 +34,8 @@ import { RouterLink } from '@angular/router';
     MatExpansionPanelHeader,
     MatExpansionPanelTitle,
     RouterLink,
+    RouterOutlet,
+    MatTooltip,
   ],
 })
 export class TofuAppLayoutComponent {

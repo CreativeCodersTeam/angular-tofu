@@ -4,17 +4,21 @@
 }
 
 mat-sidenav {
-  width: 240px;
+  width: 300px;
   background: #f5f5f5;
   padding: 1rem 0;
 }
+
+//.sidenav-content {
+//  padding: 1rem;
+//}
 
 mat-sidenav-content {
   display: flex;
   flex-direction: column;
   width: 100%;
   height: 100%;
-  overflow: hidden; // verhindert Scrollen auf Container-Ebene
+  overflow: hidden; // No scrolling allowed here
 }
 
 mat-toolbar.app-toolbar {
@@ -34,7 +38,7 @@ mat-toolbar.app-toolbar {
 
 .app-content {
   flex: 1 1 auto;
-  overflow-y: auto; // einzige Stelle, wo Scroll erlaubt ist
+  overflow-y: auto; // only scrolling allowed here
   padding: 1rem;
 }
 
@@ -44,7 +48,7 @@ mat-toolbar.app-toolbar {
 }
 
 .navigation-expansion-panel {
-  //border-radius: 0 !important;
+  border-radius: 0 !important;
   //box-shadow: none;
 }
 
@@ -53,15 +57,46 @@ mat-toolbar.app-toolbar {
 }
 
 .nav-section-title {
-  //margin-left: 8px;
+  margin-left: 16px;
 }
 
 .nested-nav-item {
-  padding-left: 16px;
+  //margin: 0;
+  //padding-left: 16px;
+  //border-radius: 0 !important;
 }
 
 mat-panel-title {
   display: flex;
   align-items: center;
 }
+
+a[mat-list-item] {
+  cursor: pointer !important;
+}
+
+.nav-item-label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 180px;
+}
+
+
+//
+//mat-expansion-panel .mat-nav-list {
+//  padding: 0;
+//}
+//
+//mat-expansion-panel mat-nav-list a.mat-list-item {
+//  border-radius: 0;
+//  width: 100%;
+//  margin: 0;
+//  padding-right: 16px;
+//}
+//
+//mat-expansion-panel mat-nav-list a.mat-list-item .mat-ripple {
+//  border-radius: 0;
+//}
+
 

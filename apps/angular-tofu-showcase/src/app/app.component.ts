@@ -1,11 +1,13 @@
-import { Component, Input, TemplateRef } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { TofuAppLayoutComponent, TofuNavigationEntry } from '@cc-team/angular-tofu';
+import { Component } from '@angular/core';
+import {
+  TofuAppLayoutComponent,
+  TofuNavigationEntry,
+} from '@cc-team/angular-tofu';
 import { MatListItem } from '@angular/material/list';
 import { MatIcon } from '@angular/material/icon';
 
 @Component({
-  imports: [RouterModule, TofuAppLayoutComponent, MatListItem, MatIcon],
+  imports: [TofuAppLayoutComponent, MatListItem, MatIcon],
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
@@ -17,7 +19,7 @@ export class AppComponent {
     {
       icon: 'home',
       title: 'Home',
-      route: '/',
+      route: '',
     },
     {
       icon: 'settings',
@@ -27,13 +29,18 @@ export class AppComponent {
     {
       icon: 'help',
       title: 'Help',
-      entries:[
+      entries: [
         {
-          icon: 'about',
+          icon: 'info',
           title: 'About',
           route: '/about',
-        }
-      ]
+        },
+        {
+          icon: 'info',
+          title: 'This is a very long title that should be cut off',
+          route: '/about',
+        },
+      ],
     },
   ];
 }
