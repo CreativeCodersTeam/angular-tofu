@@ -7,6 +7,12 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconButton } from '@angular/material/button';
 import { TofuNavigationEntry } from './tofu-navigation-entry';
 import { NgForOf, NgIf, NgTemplateOutlet } from '@angular/common';
+import {
+  MatExpansionPanel,
+  MatExpansionPanelHeader,
+  MatExpansionPanelTitle,
+} from '@angular/material/expansion';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'tofu-app-layout',
@@ -23,6 +29,10 @@ import { NgForOf, NgIf, NgTemplateOutlet } from '@angular/common';
     NgForOf,
     NgIf,
     NgTemplateOutlet,
+    MatExpansionPanel,
+    MatExpansionPanelHeader,
+    MatExpansionPanelTitle,
+    RouterLink,
   ],
 })
 export class TofuAppLayoutComponent {
@@ -35,6 +45,9 @@ export class TofuAppLayoutComponent {
   @Input()
   menuItemTemplate?: TemplateRef<{ $implicit: TofuNavigationEntry }>;
 
+  @Input()
+  menuFolderTemplate?: TemplateRef<{ $implicit: TofuNavigationEntry }>;
+
   isSmallScreen = false;
 
   constructor(private breakpointObserver: BreakpointObserver) {
@@ -44,6 +57,4 @@ export class TofuAppLayoutComponent {
         this.isSmallScreen = result.matches;
       });
   }
-
-  protected readonly TofuNavigationEntry = TofuNavigationEntry;
 }

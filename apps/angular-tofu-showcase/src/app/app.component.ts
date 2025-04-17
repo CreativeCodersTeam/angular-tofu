@@ -14,6 +14,26 @@ export class AppComponent {
   title = 'angular-tofu-showcase';
 
   navEntries: TofuNavigationEntry[] = [
-    new TofuNavigationEntry("Home", "/"),
-    new TofuNavigationEntry("About", "/about")];
+    {
+      icon: 'home',
+      title: 'Home',
+      route: '/',
+    },
+    {
+      icon: 'settings',
+      title: 'Settings',
+      route: '/settings',
+    },
+    {
+      icon: 'help',
+      title: 'Help',
+      entries:[
+        {
+          icon: 'about',
+          title: 'About',
+          route: '/about',
+        }
+      ]
+    },
+  ];
 }

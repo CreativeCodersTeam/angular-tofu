@@ -1,20 +1,9 @@
-import { TofuNavigationService } from './tofu-navigation.service';
-import { inject } from '@angular/core';
+export interface TofuNavigationEntry {
+  icon?: string;
 
-export class TofuNavigationEntry {
-  title = '';
+  title: string;
 
-  href = '';
-  private navigationService: TofuNavigationService;
+  route?: string;
 
-  constructor(title: string, href: string) {
-    this.title = title;
-    this.href = href;
-
-    this.navigationService = inject(TofuNavigationService);
-  }
-
-  public navigate(): void{
-    this.navigationService.navigate(this.href);
-  }
+  entries?: TofuNavigationEntry[];
 }
