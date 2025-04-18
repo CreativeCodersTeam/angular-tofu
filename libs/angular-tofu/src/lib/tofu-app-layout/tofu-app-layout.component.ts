@@ -1,4 +1,9 @@
-import { Component, Input, TemplateRef } from '@angular/core';
+import {
+  Component,
+  Input,
+  TemplateRef,
+  ViewEncapsulation,
+} from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
@@ -37,6 +42,7 @@ import { MatTooltip } from '@angular/material/tooltip';
     RouterOutlet,
     MatTooltip,
   ],
+  encapsulation: ViewEncapsulation.None,
 })
 export class TofuAppLayoutComponent {
   @Input()
