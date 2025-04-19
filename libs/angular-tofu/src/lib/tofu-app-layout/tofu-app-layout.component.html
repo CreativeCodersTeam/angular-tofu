@@ -5,16 +5,7 @@
                [opened]="!isSmallScreen">
     <nav class="sidenav-content">
 
-      <ng-container *ngFor="let entry of navEntries">
-        <mat-nav-list>
-          <ng-container *ngIf="entry.entries">
-            <ng-container *ngTemplateOutlet="defaultFolderTemplate; context: { $implicit: entry}"></ng-container>
-          </ng-container>
-          <ng-container *ngIf="!entry.entries">
-            <ng-container *ngTemplateOutlet="defaultItemTemplate; context: { $implicit: entry}"></ng-container>
-          </ng-container>
-        </mat-nav-list>
-      </ng-container>
+      <tofu-navigation-tree [navEntries]="navEntries"></tofu-navigation-tree>
 
     </nav>
   </mat-sidenav>
@@ -33,30 +24,3 @@
   </mat-sidenav-content>
 
 </mat-sidenav-container>
-
-<ng-template #defaultItemTemplate let-item>
-  <a mat-list-item [routerLink]="item.route">
-    <mat-icon *ngIf="item.icon" matListItemIcon>{{ item.icon }}</mat-icon>
-    {{ item.title }}
-  </a>
-</ng-template>
-
-<ng-template #defaultFolderTemplate let-folder>
-  <mat-expansion-panel class="mat-elevation-z0 navigation-expansion-panel">
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        <mat-icon *ngIf="folder.icon">{{ folder.icon }}</mat-icon>
-        <span class="nav-section-title">{{ folder.title }}</span>
-      </mat-panel-title>
-    </mat-expansion-panel-header>
-
-    <mat-nav-list>
-      <a mat-list-item *ngFor="let childItem of folder.entries"
-         [routerLink]="childItem.route"
-      >
-        <mat-icon *ngIf="childItem.icon" matListItemIcon>{{ childItem.icon }}</mat-icon>
-        <span class="nav-item-label">{{ childItem.title }}</span>
-      </a>
-    </mat-nav-list>
-  </mat-expansion-panel>
-</ng-template>
