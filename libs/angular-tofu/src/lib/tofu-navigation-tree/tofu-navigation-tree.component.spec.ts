@@ -1,5 +1,5 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TofuNavigationTreeComponent } from './tofu-navigation-tree.component';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {TofuNavigationTreeComponent} from '../tofu-navigation-tree';
 
 describe('TofuNavigationTreeComponent', () => {
   let component: TofuNavigationTreeComponent;

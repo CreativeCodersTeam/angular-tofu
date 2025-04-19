@@ -2,7 +2,6 @@ import {
   Component,
   Input,
   TemplateRef,
-  ViewEncapsulation,
 } from '@angular/core';
 import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 import {MatSidenavModule} from '@angular/material/sidenav';
@@ -10,16 +9,9 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatListModule} from '@angular/material/list';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatIconButton} from '@angular/material/button';
-import {TofuNavigationEntry} from '../tofu-navigation-tree/tofu-navigation-entry';
-import {NgForOf, NgIf, NgTemplateOutlet} from '@angular/common';
-import {
-  MatExpansionPanel,
-  MatExpansionPanelHeader,
-  MatExpansionPanelTitle,
-} from '@angular/material/expansion';
-import {RouterLink, RouterOutlet} from '@angular/router';
-import {MatTooltip} from '@angular/material/tooltip';
-import {TofuNavigationTreeComponent} from "../tofu-navigation-tree/tofu-navigation-tree.component";
+import {TofuNavigationEntry} from '../tofu-navigation-tree';
+import {RouterOutlet} from '@angular/router';
+import {TofuNavigationTreeComponent} from "../tofu-navigation-tree";
 
 @Component({
   selector: 'tofu-app-layout',
@@ -33,15 +25,7 @@ import {TofuNavigationTreeComponent} from "../tofu-navigation-tree/tofu-navigati
     MatListModule,
     MatToolbarModule,
     MatIconButton,
-    NgForOf,
-    NgIf,
-    NgTemplateOutlet,
-    MatExpansionPanel,
-    MatExpansionPanelHeader,
-    MatExpansionPanelTitle,
-    RouterLink,
     RouterOutlet,
-    MatTooltip,
     TofuNavigationTreeComponent,
   ],
   //encapsulation: ViewEncapsulation.None,

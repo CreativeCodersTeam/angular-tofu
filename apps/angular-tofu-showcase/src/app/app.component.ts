@@ -1,13 +1,11 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {
   TofuAppLayoutComponent,
   TofuNavigationEntry,
 } from '@cc-team/angular-tofu';
-import { MatListItem } from '@angular/material/list';
-import { MatIcon } from '@angular/material/icon';
 
 @Component({
-  imports: [TofuAppLayoutComponent, MatListItem, MatIcon],
+  imports: [TofuAppLayoutComponent],
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
