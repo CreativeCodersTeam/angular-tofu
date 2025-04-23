@@ -19,6 +19,8 @@
   a[mat-list-item] {
     transition: background-color 0.3s ease; // Animation hinzufügen
 
+    padding: 0 !important;
+
     &:hover {
       background-color: rgba(0, 0, 0, 0.04); // Gleiche Hover-Farbe für alle
     }
@@ -33,6 +35,8 @@
   mat-expansion-panel mat-nav-list a[mat-list-item] {
     padding-left: 16px;
     padding-right: 16px;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
     height: 48px;
     display: flex;
     align-items: center;
