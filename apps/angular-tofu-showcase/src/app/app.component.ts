@@ -36,7 +36,7 @@ export class AppComponent {
         {
           icon: 'info',
           title: 'This is a very long title that should be cut off',
-          route: '/about',
+          route: '/about2',
         },
       ],
     },
