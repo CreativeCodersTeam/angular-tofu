@@ -8,7 +8,7 @@ import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatIconModule} from '@angular/material/icon';
 import {MatListModule} from '@angular/material/list';
 import {MatToolbarModule} from '@angular/material/toolbar';
-import {MatAnchor, MatIconButton} from '@angular/material/button';
+import {MatAnchor, MatFabButton, MatIconButton, MatMiniFabButton} from '@angular/material/button';
 import {TofuNavigationEntry} from '../tofu-navigation-tree';
 import {RouterOutlet} from '@angular/router';
 import {TofuNavigationTreeComponent} from "../tofu-navigation-tree";
@@ -30,6 +30,8 @@ import {NgIf} from "@angular/common";
     TofuNavigationTreeComponent,
     MatAnchor,
     NgIf,
+    MatFabButton,
+    MatMiniFabButton,
   ],
   //encapsulation: ViewEncapsulation.None,
 })

@@ -7,19 +7,16 @@
     <nav class="sidenav-content">
 
       <div class="sidenav-container">
-        <!-- Hauptnavigation - flexibel wachsend -->
         <div class="sidenav-main">
           <tofu-navigation-tree [hasSmallNavTree]="showSmallMenu" [navEntries]="navEntries"></tofu-navigation-tree>
         </div>
 
-        <!-- Footer - am unteren Ende fixiert -->
         <div class="sidenav-footer">
-          <a *ngIf="canShowSmallMenu" mat-button (click)="toggleSmallMenu()">
-            <mat-icon>keyboard_double_arrow_left</mat-icon>
-          </a>
+          <button *ngIf="canShowSmallMenu" mat-icon-button (click)="toggleSmallMenu()">
+            <mat-icon>{{ showSmallMenu ? "keyboard_double_arrow_right" : "keyboard_double_arrow_left" }}</mat-icon>
+          </button>
         </div>
       </div>
-      <!--      <tofu-navigation-tree [navEntries]="navEntries"></tofu-navigation-tree>-->
 
     </nav>
   </mat-sidenav>

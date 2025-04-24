@@ -40,5 +40,21 @@ export class AppComponent {
         },
       ],
     },
+    {
+      icon: 'help',
+      title: 'Help',
+      entries: [
+        {
+          icon: 'info',
+          title: 'Something about',
+          route: '/about',
+        },
+        {
+          icon: 'info',
+          title: 'This is short',
+          route: '/about2',
+        },
+      ],
+    },
   ];
 }
