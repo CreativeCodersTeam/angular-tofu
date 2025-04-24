@@ -2,10 +2,24 @@
 
   <mat-sidenav #sidenav
                [mode]="isSmallScreen ? 'over' : 'side'"
-               [opened]="!isSmallScreen">
+               [opened]="!isSmallScreen"
+               [style.width]="navWidth">
     <nav class="sidenav-content">
 
-      <tofu-navigation-tree [navEntries]="navEntries"></tofu-navigation-tree>
+      <div class="sidenav-container">
+        <!-- Hauptnavigation - flexibel wachsend -->
+        <div class="sidenav-main">
+          <tofu-navigation-tree [hasSmallNavTree]="showSmallMenu" [navEntries]="navEntries"></tofu-navigation-tree>
+        </div>
+
+        <!-- Footer - am unteren Ende fixiert -->
+        <div class="sidenav-footer">
+          <a *ngIf="canShowSmallMenu" mat-button (click)="toggleSmallMenu()">
+            <mat-icon>keyboard_double_arrow_left</mat-icon>
+          </a>
+        </div>
+      </div>
+      <!--      <tofu-navigation-tree [navEntries]="navEntries"></tofu-navigation-tree>-->
 
     </nav>
   </mat-sidenav>
