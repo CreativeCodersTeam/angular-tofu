@@ -1,83 +1,49 @@
-
-#tofu-navigation-tree-container .mat-expansion-panel-body {
-  padding: 0 !important;
-}
-
 #tofu-navigation-tree-container {
-  // Entfernen der Null-Padding-Einstellung vom Container und direkt auf das Panel anwenden
   .mat-expansion-panel-body {
     padding: 0 !important;
   }
 
   .active-link {
-    background-color: rgba(0, 0, 0, 0.05);
-    color: inherit;
+    background-color: rgba(0, 0, 0, 0.08);
     font-weight: 500;
   }
 
-  // Einheitliches Hover-Verhalten für alle mat-list-items
-  a[mat-list-item] {
-    transition: background-color 0.3s ease; // Animation hinzufügen
-
+  mat-nav-list {
     padding: 0 !important;
-
-    &:hover {
-      background-color: rgba(0, 0, 0, 0.04); // Gleiche Hover-Farbe für alle
-    }
-
-    &:active {
-      background-color: rgba(0, 0, 0, 0.08); // Einheitliches Klick-Verhalten
-    }
   }
 
-  // Einheitliches Styling für Haupt- und Untermenü-Elemente
   mat-nav-list a[mat-list-item],
   mat-expansion-panel mat-nav-list a[mat-list-item] {
-    padding-left: 16px;
-    padding-right: 16px;
-    padding-top: 0 !important;
-    padding-bottom: 0 !important;
+    transition: background-color 0.3s ease;
+    padding: 0 !important;
     height: 48px;
     display: flex;
     align-items: center;
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.04);
+    }
+
+    &:active {
+      background-color: rgba(0, 0, 0, 0.08);
+    }
   }
 
-  // Ripple-Effekt für alle Elemente konsistent machen
   .mat-ripple-element {
     opacity: 0.1;
   }
 
-  // Einheitliche Rundungen und Übergänge
   mat-nav-list,
   mat-expansion-panel,
   a[mat-list-item] {
     border-radius: 0 !important;
   }
+
+  mat-expansion-panel-header {
+    padding: 0 16px 0 16px !important;
+  }
+
+  .nav-section-title {
+    padding: 16px;
+  }
 }
-
-//#tofu-navigation-tree-container {
-//  // Gemeinsames Styling für alle mat-list-items
-//  a[mat-list-item] {
-//    &:hover {
-//      background-color: rgba(0, 0, 0, 0.04); // Standard Material Hover-Farbe
-//    }
-//  }
-//
-//  // Sicherstellen, dass das Padding bei allen mat-list-items gleich ist
-//  mat-nav-list a[mat-list-item],
-//  mat-expansion-panel mat-nav-list a[mat-list-item] {
-//    padding-left: 16px;
-//    padding-right: 16px;
-//    height: 48px; // Standardhöhe für konsistentes Aussehen
-//  }
-//
-//  // Entfernung von Rundungen für ein einheitliches Aussehen
-//  mat-nav-list, mat-expansion-panel, a[mat-list-item] {
-//    border-radius: 0 !important;
-//  }
-//}
-
-// Behält die Null-Padding-Einstellung bei
-//.mat-expansion-panel-body {
-//  padding: 0 !important;
-//}

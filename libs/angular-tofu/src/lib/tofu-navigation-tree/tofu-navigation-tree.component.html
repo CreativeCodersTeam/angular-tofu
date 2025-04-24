@@ -20,9 +20,9 @@
 </ng-template>
 
 <ng-template #defaultFolderTemplate let-folder>
-  <mat-expansion-panel class="mat-elevation-z0 navigation-expansion-panel">
+  <mat-expansion-panel id="tofu-navigation-folder-container" class="mat-elevation-z0 navigation-expansion-panel">
     <mat-expansion-panel-header>
-      <mat-panel-title>
+      <mat-panel-title style="padding: 0 !important;">
         <mat-icon *ngIf="folder.icon">{{ folder.icon }}</mat-icon>
         <span class="nav-section-title">{{ folder.title }}</span>
       </mat-panel-title>
@@ -31,7 +31,7 @@
       <a mat-list-item *ngFor="let childItem of folder.entries"
          [routerLink]="childItem.route" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}"
       >
-        <mat-icon *ngIf="childItem.icon" matListItemIcon>{{ childItem.icon }}</mat-icon>
+        <mat-icon *ngIf="childItem.icon" matListItemIcon style="padding-left: 8px">{{ childItem.icon }}</mat-icon>
         <span class="nav-item-label">{{ childItem.title }}</span>
       </a>
     </mat-nav-list>
