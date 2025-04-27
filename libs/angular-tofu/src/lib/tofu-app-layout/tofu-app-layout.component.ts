@@ -1,18 +1,14 @@
-import {
-  Component,
-  Input,
-  TemplateRef,
-} from '@angular/core';
-import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
-import {MatSidenavModule} from '@angular/material/sidenav';
-import {MatIconModule} from '@angular/material/icon';
-import {MatListModule} from '@angular/material/list';
-import {MatToolbarModule} from '@angular/material/toolbar';
-import {MatAnchor, MatFabButton, MatIconButton, MatMiniFabButton} from '@angular/material/button';
-import {TofuNavigationEntry} from '../tofu-navigation-tree';
-import {RouterOutlet} from '@angular/router';
-import {TofuNavigationTreeComponent} from "../tofu-navigation-tree";
-import {NgIf} from "@angular/common";
+import { Component, Input, signal, TemplateRef } from '@angular/core';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatIconButton } from '@angular/material/button';
+import { TofuNavigationEntry } from '../tofu-navigation-tree';
+import { RouterOutlet } from '@angular/router';
+import { TofuNavigationTreeComponent } from '../tofu-navigation-tree';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'tofu-app-layout',
@@ -28,12 +24,8 @@ import {NgIf} from "@angular/common";
     MatIconButton,
     RouterOutlet,
     TofuNavigationTreeComponent,
-    MatAnchor,
     NgIf,
-    MatFabButton,
-    MatMiniFabButton,
   ],
-  //encapsulation: ViewEncapsulation.None,
 })
 export class TofuAppLayoutComponent {
   @Input()
@@ -55,12 +47,12 @@ export class TofuAppLayoutComponent {
 
   showSmallMenu = false;
 
-  navWidth = "300px";
+  navWidth = '300px';
 
   public toggleSmallMenu() {
     this.showSmallMenu = !this.showSmallMenu;
 
-    this.navWidth = this.showSmallMenu ? "48px" : "300px";
+    this.navWidth = this.showSmallMenu ? '48px' : '300px';
   }
 
   constructor(private breakpointObserver: BreakpointObserver) {

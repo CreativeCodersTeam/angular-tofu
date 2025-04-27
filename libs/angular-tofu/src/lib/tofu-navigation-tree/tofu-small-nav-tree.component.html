@@ -1,4 +1,4 @@
-<mat-nav-list>
+<mat-nav-list class="centered-icon-container">
   <ng-container *ngFor="let entry of navEntries">
     <ng-container *ngIf="entry.entries">
       <ng-container *ngTemplateOutlet="defaultFolderTemplate; context: { $implicit: entry}"></ng-container>
