@@ -15,11 +15,25 @@ describe('TofuAppMessagingService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should return a message', (done) => {
+  it('should execute registration callback', (done) => {
     service.register<string>('test', (msg) => {
-      if (msg === '1234') done();
+      if (msg === '1234') {
+        done();
+      }
     });
 
     service.sendMessage({ type: 'test', payload: '1234' });
+  });
+
+  it('should execute registration callback after unregister', () => {
+    const callback = jest.fn();
+
+    const registrationId = service.register<string>('test', callback);
+
+    service.unregister(registrationId);
+
+    service.sendMessage({ type: 'test', payload: '1234' });
+
+    expect(callback).not.toHaveBeenCalled();
   });
 });

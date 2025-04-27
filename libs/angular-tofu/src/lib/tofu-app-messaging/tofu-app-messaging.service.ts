@@ -4,7 +4,7 @@ import { Injectable, Type } from '@angular/core';
   providedIn: 'root',
 })
 export class TofuAppMessagingService {
-  private idCounter = 0n;
+  private idCounter = 1n;
 
   registrations: TofuAppMessagingRegistration[] = [];
 
@@ -33,7 +33,7 @@ export class TofuAppMessagingService {
     }
   }
 
-  public removeRegistration(registrationId: bigint) {
+  public unregister(registrationId: bigint) {
     this.registrations = this.registrations.filter(
       (r) => r.id !== registrationId
     );
