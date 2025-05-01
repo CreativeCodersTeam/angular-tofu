@@ -1,4 +1,10 @@
-import { Component, Input, signal, TemplateRef } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnDestroy,
+  OnInit,
+  TemplateRef,
+} from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
@@ -9,6 +15,9 @@ import { TofuNavigationEntry } from '../tofu-navigation-tree';
 import { RouterOutlet } from '@angular/router';
 import { TofuNavigationTreeComponent } from '../tofu-navigation-tree';
 import { NgIf } from '@angular/common';
+import { TofuAppMessagingService } from '../tofu-app-messaging';
+import { Subscription } from 'rxjs';
+import { TofuAppLayoutConsts } from './tofu-app-layout-consts';
 
 @Component({
   selector: 'tofu-app-layout',
@@ -27,7 +36,7 @@ import { NgIf } from '@angular/common';
     NgIf,
   ],
 })
-export class TofuAppLayoutComponent {
+export class TofuAppLayoutComponent implements OnInit, OnDestroy {
   @Input()
   appTitle = '';
 
@@ -49,17 +58,39 @@ export class TofuAppLayoutComponent {
 
   navWidth = '300px';
 
+  private breakpointObserverSubscription: Subscription | undefined;
+
+  private appTitleSubscription: Subscription | undefined;
+
   public toggleSmallMenu() {
     this.showSmallMenu = !this.showSmallMenu;
 
     this.navWidth = this.showSmallMenu ? '48px' : '300px';
   }
 
-  constructor(private breakpointObserver: BreakpointObserver) {
-    this.breakpointObserver
+  constructor(
+    private breakpointObserver: BreakpointObserver,
+    private appMessagingService: TofuAppMessagingService
+  ) {}
+
+  ngOnDestroy(): void {
+    this.breakpointObserverSubscription?.unsubscribe();
+    this.appTitleSubscription?.unsubscribe();
+  }
+
+  ngOnInit(): void {
+    this.breakpointObserverSubscription = this.breakpointObserver
       .observe([Breakpoints.Handset])
       .subscribe((result) => {
         this.isSmallScreen = result.matches;
       });
+
+    this.appTitleSubscription =
+      this.appMessagingService.registerWithCallback<string>(
+        TofuAppLayoutConsts.MSG_SET_APP_TITLE,
+        (title) => {
+          this.appTitle = title;
+        }
+      );
   }
 }
