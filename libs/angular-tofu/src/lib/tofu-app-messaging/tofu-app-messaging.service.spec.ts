@@ -1,7 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-
 import { TofuAppMessagingService } from './tofu-app-messaging.service';
-import { msg } from 'ng-packagr/lib/utils/log';
 
 describe('TofuAppMessagingService', () => {
   let service: TofuAppMessagingService;
@@ -15,8 +13,8 @@ describe('TofuAppMessagingService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should execute registration callback', (done) => {
-    service.register<string>('test', (msg) => {
+  it('should execute registration callback on sendMessage', (done) => {
+    service.registerWithCallback('test', (msg) => {
       if (msg === '1234') {
         done();
       }
@@ -25,12 +23,22 @@ describe('TofuAppMessagingService', () => {
     service.sendMessage({ type: 'test', payload: '1234' });
   });
 
-  it('should execute registration callback after unregister', () => {
+  it('should execute registration callback on send', (done) => {
+    service.registerWithCallback('test', (msg) => {
+      if (msg === '1234') {
+        done();
+      }
+    });
+
+    service.send('test', '1234');
+  });
+
+  it('should not execute callback after unsubscribe', () => {
     const callback = jest.fn();
 
-    const registrationId = service.register<string>('test', callback);
+    const subscription = service.registerWithCallback<string>('test', callback);
 
-    service.unregister(registrationId);
+    subscription.unsubscribe();
 
     service.sendMessage({ type: 'test', payload: '1234' });
 
