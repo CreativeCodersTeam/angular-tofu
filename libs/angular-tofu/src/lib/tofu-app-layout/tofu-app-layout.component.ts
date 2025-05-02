@@ -1,8 +1,11 @@
 import {
   Component,
+  EventEmitter,
   Input,
   OnDestroy,
   OnInit,
+  Output,
+  signal,
   TemplateRef,
 } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
@@ -11,9 +14,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconButton } from '@angular/material/button';
-import { TofuNavigationEntry } from '../tofu-navigation-tree';
+import {
+  TofuNavigationEntry,
+  TofuNavigationTreeComponent,
+} from '../tofu-navigation-tree';
 import { RouterOutlet } from '@angular/router';
-import { TofuNavigationTreeComponent } from '../tofu-navigation-tree';
 import { NgIf } from '@angular/common';
 import { TofuAppMessagingService } from '../tofu-app-messaging';
 import { Subscription } from 'rxjs';
@@ -37,8 +42,18 @@ import { TofuAppLayoutConsts } from './tofu-app-layout-consts';
   ],
 })
 export class TofuAppLayoutComponent implements OnInit, OnDestroy {
+  get appTitle(): string {
+    return this.appTitleValue();
+  }
+
   @Input()
-  appTitle = '';
+  set appTitle(value: string) {
+    this.appTitleValue.set(value);
+    this.appTitleChange.emit(value);
+  }
+
+  @Output()
+  appTitleChange = new EventEmitter<string>();
 
   @Input()
   navEntries: TofuNavigationEntry[] = [];
@@ -49,14 +64,16 @@ export class TofuAppLayoutComponent implements OnInit, OnDestroy {
   @Input()
   menuFolderTemplate?: TemplateRef<{ $implicit: TofuNavigationEntry }>;
 
-  isSmallScreen = false;
-
   @Input()
   canShowSmallMenu = true;
+
+  isSmallScreen = false;
 
   showSmallMenu = false;
 
   navWidth = '300px';
+
+  protected appTitleValue = signal('');
 
   private breakpointObserverSubscription: Subscription | undefined;
 

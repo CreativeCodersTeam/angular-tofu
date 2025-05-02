@@ -1,17 +1,26 @@
-import { Component, signal } from '@angular/core';
+import { Component } from '@angular/core';
 import {
   TofuAppLayoutComponent,
   TofuNavigationEntry,
 } from '@cc-team/angular-tofu';
+import { MatTooltip, TooltipComponent } from '@angular/material/tooltip';
 
 @Component({
-  imports: [TofuAppLayoutComponent],
+  imports: [TofuAppLayoutComponent, TooltipComponent, MatTooltip],
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
 export class AppComponent {
-  title = 'angular-tofu-showcase';
+  get title(): string {
+    return this._title;
+  }
+
+  set title(value: string) {
+    this._title = value;
+  }
+
+  private _title = 'Angular Tofu Showcase';
 
   navEntries: TofuNavigationEntry[] = [
     {
@@ -121,5 +130,4 @@ export class AppComponent {
       ],
     },
   ];
-  protected readonly signal = signal;
 }
