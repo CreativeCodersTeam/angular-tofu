@@ -1,0 +1,37 @@
+<mat-sidenav-container class="app-container" autosize>
+
+  <mat-sidenav #sidenav
+               [mode]="isSmallScreen ? 'over' : 'side'"
+               [opened]="!isSmallScreen"
+               [style.width]="navWidth">
+    <nav class="sidenav-content">
+
+      <div class="sidenav-container">
+        <div class="sidenav-main">
+          <tofu-navigation-tree [hasSmallNavTree]="showSmallMenu" [navEntries]="navEntries"></tofu-navigation-tree>
+        </div>
+
+        <div class="sidenav-footer">
+          <button *ngIf="canShowSmallMenu" mat-icon-button (click)="toggleSmallMenu()">
+            <mat-icon>{{ showSmallMenu ? "keyboard_double_arrow_right" : "keyboard_double_arrow_left" }}</mat-icon>
+          </button>
+        </div>
+      </div>
+
+    </nav>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <mat-toolbar color="primary" class="app-toolbar">
+      <button mat-icon-button (click)="sidenav.toggle()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span class="app-title">{{ appTitleValue() }}</span>
+    </mat-toolbar>
+
+    <div class="app-content">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+
+</mat-sidenav-container>
