@@ -3,10 +3,9 @@ import {
   TofuAppLayoutComponent,
   TofuNavigationEntry,
 } from '@cc-team/angular-tofu';
-import { MatTooltip, TooltipComponent } from '@angular/material/tooltip';
 
 @Component({
-  imports: [TofuAppLayoutComponent, TooltipComponent, MatTooltip],
+  imports: [TofuAppLayoutComponent],
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
