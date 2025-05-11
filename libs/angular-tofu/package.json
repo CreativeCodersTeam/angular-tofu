@@ -1,6 +1,7 @@
 {
   "name": "@cc-team/angular-tofu",
   "version": "0.0.1",
+  "repository": "https://github.com/creativecodersteam/angular-tofu",
   "peerDependencies": {
     "@angular/common": "^19.2.0",
     "@angular/core": "^19.2.0",
