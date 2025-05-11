@@ -40,6 +40,11 @@ jobs:
       - run: npx nx affected -t lint test build e2e
 
       - name: Publish to npm
-        run: npm publish
+        run: |
+          #read version from tag
+          TAG=${GITHUB_REF#refs/tags/}
+
+          echo "$TAG"
+          #nx run angular-tofu:nx-release-publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }} # NPM-Token aus GitHub Secrets
