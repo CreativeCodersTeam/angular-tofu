@@ -1,8 +1,8 @@
-import {Component, Input} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {TofuNavigationEntry} from "@cc-team/angular-tofu";
-import {TofuLargeNavTreeComponent} from "./tofu-large-nav-tree.component";
-import {TofuSmallNavTreeComponent} from "./tofu-small-nav-tree.component";
+import { Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { TofuNavigationEntry } from './tofu-navigation-entry';
+import { TofuLargeNavTreeComponent } from './tofu-large-nav-tree.component';
+import { TofuSmallNavTreeComponent } from './tofu-small-nav-tree.component';
 
 @Component({
   selector: 'tofu-navigation-tree',

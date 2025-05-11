@@ -7,7 +7,7 @@ describe('TofuAppLayoutComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TofuAppLayoutComponent],
+      imports: [TofuAppLayoutComponent],
     }).compileComponents();
 
     fixture = TestBed.createComponent(TofuAppLayoutComponent);
