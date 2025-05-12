@@ -42,9 +42,15 @@ jobs:
       - name: Publish to npm
         run: |
           #read version from tag
-          TAG=${GITHUB_REF#refs/tags/}
+          TAG=${GITHUB_REF#refs/tags/v}
 
-          echo "$TAG"
+          BUILD_RUN=${{ github.run_number }}
+
+          IFS='.' read -r -a VERSION_PARTS <<< "$CURRENT_VERSION"
+
+          NEW_VERSION="${VERSION_PARTS[0]}.${VERSION_PARTS[1]}.${VERSION_PARTS[2]}.$BUILD_RUN"
+
+          echo "New version: $NEW_VERSION"
           #nx run angular-tofu:nx-release-publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }} # NPM-Token aus GitHub Secrets
