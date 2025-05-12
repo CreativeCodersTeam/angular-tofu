@@ -41,6 +41,9 @@ jobs:
 
       - name: Publish to npm
         run: |
+          LATEST_TAG=$(git describe --tags --abbrev=0)
+          echo "Last Tag: $LATEST_TAG"
+
           #read version from tag
           TAG=${GITHUB_REF#refs/tags/v}
 
