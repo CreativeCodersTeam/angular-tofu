@@ -65,7 +65,7 @@ jobs:
 
           echo "New version: $NEW_VERSION"
 
-          nx release version ${NEW_VERSION}
+          npx nx release version ${NEW_VERSION}
 
           #nx run angular-tofu:nx-release-publish
         env:
