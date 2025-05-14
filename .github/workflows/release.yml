@@ -68,6 +68,6 @@ jobs:
 
           npx nx release version ${NEW_VERSION}
 
-          npx nx run angular-tofu:nx-release-publish
+          npx nx run angular-tofu:nx-release-publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }} # NPM-Token aus GitHub Secrets
