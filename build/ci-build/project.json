@@ -1,0 +1,59 @@
+{
+  "name": "ci-build",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "build/ci-build/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "platform": "node",
+        "outputPath": "dist/build/ci-build",
+        "format": ["cjs"],
+        "bundle": false,
+        "main": "build/ci-build/src/main.ts",
+        "tsConfig": "build/ci-build/tsconfig.app.json",
+        "assets": ["build/ci-build/src/assets"],
+        "generatePackageJson": true,
+        "esbuildOptions": {
+          "sourcemap": true,
+          "outExtension": {
+            ".js": ".js"
+          }
+        }
+      },
+      "configurations": {
+        "development": {},
+        "production": {
+          "esbuildOptions": {
+            "sourcemap": false,
+            "outExtension": {
+              ".js": ".js"
+            }
+          }
+        }
+      }
+    },
+    "serve": {
+      "continuous": true,
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "dependsOn": ["build"],
+      "options": {
+        "buildTarget": "ci-build:build",
+        "runBuildTargetDependencies": false
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "ci-build:build:development"
+        },
+        "production": {
+          "buildTarget": "ci-build:build:production"
+        }
+      }
+    }
+  }
+}
