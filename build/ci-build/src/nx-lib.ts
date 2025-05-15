@@ -1,6 +1,6 @@
 
 export class NxLib {
-  constructor(private readonly base?: string) {
+  constructor(private dryRun: boolean, private readonly base?: string) {
   }
 
   async executeNxCommand(command: string): Promise<string> {
@@ -8,6 +8,10 @@ export class NxLib {
     const { promisify } = await import('util');
     const execPromise = promisify(exec);
 
+    if (this.dryRun) {
+      console.log(`[DRY RUN] npx nx ${command}`);
+      return '';
+    }
     try {
       const { stdout } = await execPromise(`npx nx ${command}`);
       return stdout.trim();
