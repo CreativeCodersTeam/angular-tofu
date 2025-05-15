@@ -30,20 +30,20 @@ export class SimpleGitVersion {
       }
 
       return version;
-      //return `${lastTag}-${commitCount.trim()}`;
     } catch (error) {
       console.error('Error getting version:', error);
-      return 'unknown';
+
+      throw error;
     }
   }
 
-  concatVersion(version: string, versionPart: string, defaultVersionPart: string): string {
+  private concatVersion(version: string, versionPart: string, defaultVersionPart: string): string {
     versionPart = versionPart || defaultVersionPart;
 
     return version ? `${version}.${versionPart}` : versionPart;
   }
 
-  splitVersion(version: string): { major: string; minor: string; patch: string; prerelease: string; buildmetadata: string } {
+  private splitVersion(version: string): { major: string; minor: string; patch: string; prerelease: string; buildmetadata: string } {
 
     const versionParts = version.split('-')[0].split('.');
     const major = versionParts.length >= 1 ?  versionParts[0] : '';
