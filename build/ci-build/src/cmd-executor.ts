@@ -1,9 +1,8 @@
 import { exec } from 'child_process';
 import { promisify } from 'util';
 
-export  class CmdExecutor {
-  constructor(private dryRun: boolean) {
-  }
+export class CmdExecutor {
+  constructor(private dryRun: boolean) {}
 
   async execute(command: string): Promise<string> {
     const execPromise = promisify(exec);

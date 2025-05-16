@@ -2,21 +2,22 @@ export interface BuildTaskResult {
   succeeded: boolean;
 }
 
-export type BuildTaskFunction = (buildContext: BuildContext) => Promise<BuildTaskResult> | Promise<void>;
+export type BuildTaskFunction = (
+  buildContext: BuildContext
+) => Promise<BuildTaskResult> | Promise<void>;
 
 export interface BuildTask {
   name: string;
   execute: BuildTaskFunction;
 }
 
-
-export abstract class BuildDefinition{
+export abstract class BuildDefinition {
   tasks: BuildTask[] = [];
 
-  abstract buildTasks: BuildTask[];
+  //abstract buildTasks: BuildTask[];
 
-  AddTask(taskName: string, task: BuildTaskFunction){
-    this.tasks.push({name: taskName, execute: task});
+  AddTask(taskName: string, task: BuildTaskFunction) {
+    this.tasks.push({ name: taskName, execute: task });
 
     return this;
   }
@@ -24,9 +25,6 @@ export abstract class BuildDefinition{
   abstract name: string;
 }
 
-export interface BuildContext{
+export interface BuildContext {}
 
-}
-
-export interface BuildDefinitionFactory extends BuildContext{
-}
+export interface BuildDefinitionFactory extends BuildContext {}

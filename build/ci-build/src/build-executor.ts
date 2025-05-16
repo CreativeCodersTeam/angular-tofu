@@ -1,27 +1,59 @@
-import {
-  BuildDefinition,
-  BuildContext,
-  BuildTask,
-} from './build-definition';
+import { BuildDefinition, BuildContext, BuildTask } from './build-definition';
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
+import { logger } from './build-logger';
+
+export class BuildExecutionException extends Error {
+  ctor(message: string) {
+    this.message = message;
+  }
+}
 
 export class BuildExecutor {
-  static createInstance(args: string[]) {
-    return new BuildExecutor(args);
+  static createInstance(cliName: string) {
+    return new BuildExecutor(cliName);
   }
 
-  private constructor(private args: string[]) {}
+  private constructor(private cliName: string) {}
 
   async run(buildDefinition: BuildDefinition): Promise<void> {
-    console.log('CreativeCoders build-it');
-    console.log('=======================');
-    console.log();
-    console.log('Running build:', buildDefinition.name);
+    await yargs()
+      .scriptName(this.cliName)
+      .command(
+        'exec [targets...]',
+        '',
+        (yargs) => yargs.positional('targets', { type: 'string', array: true }),
+        async (yargs) => {
+          await this.runBuild(buildDefinition, yargs.targets);
+        }
+      )
+      .command(
+        '$0 [targets...]',
+        '',
+        (yargs) => yargs.positional('targets', { type: 'string', array: true }),
+        async (yargs) => {
+          await this.runBuild(buildDefinition, yargs.targets);
+        }
+      )
+      .help()
+      .parse(hideBin(process.argv));
+  }
+
+  private async runBuild(buildDefinition: BuildDefinition, targets: string[]) {
+    logger.log('CreativeCoders build-it');
+    logger.log('=======================');
+    logger.log();
+    logger.log('Running build:', buildDefinition.name);
 
     const buildContext = {};
 
-    const buildTasks = this.findBuildTasks(buildDefinition);
+    const buildTasks = this.findBuildTasks(buildDefinition, targets);
+
+    logger.log('Build tasks for execution');
+
+    for (const buildTask of buildTasks) {
+      logger.log('-', buildTask.name);
+    }
 
     for (const buildTask of buildTasks) {
       await this.executeBuildTask(buildContext, buildTask);
@@ -32,15 +64,24 @@ export class BuildExecutor {
     buildContext: BuildContext,
     buildTask: BuildTask
   ): Promise<void> {
-    console.log('Executing build task:', buildTask.name);
+    logger.log('Executing build task:', buildTask.name);
 
-    buildTask.execute(buildContext);
-
-    return Promise.resolve();
+    try {
+      await buildTask.execute(buildContext);
+    }
+    catch (error) {
+      if (error instanceof BuildExecutionException) {
+        logger.error('Build task failed:', error.message);
+      } else{
+        logger.error('Runtime error:', error.message);
+      }
+    }
   }
 
-  private findBuildTasks(buildDefinition: BuildDefinition) {
-    return buildDefinition.tasks;
+  private findBuildTasks(buildDefinition: BuildDefinition, targets: string[]) {
+    return buildDefinition.tasks.filter((buildTask) =>
+      targets.includes(buildTask.name)
+    );
   }
 }
 
@@ -48,29 +89,5 @@ export async function runBuildIt(
   cliName: string,
   buildDefinition: BuildDefinition
 ): Promise<void> {
-  await yargs()
-    .scriptName(cliName)
-    .command(
-      'run [targets...]',
-      '',
-      (yargs) => yargs.positional('targets', { type: 'string', array: true }),
-      (yargs) => {
-        console.log('run yargs', yargs.targets);
-      }
-    )
-    .command(
-      '$0 [targets...]',
-      '',
-      (yargs) => yargs.positional('targets', { type: 'string', array: true }),
-      (yargs) => {
-        console.log('run yargs without run', yargs.targets);
-      }
-    )
-    //.default('run', 'build')
-    .help()
-    .parse(hideBin(process.argv));
-
-  await BuildExecutor.createInstance(process.argv.slice(2)).run(
-    buildDefinition
-  );
+  await BuildExecutor.createInstance(cliName).run(buildDefinition);
 }

@@ -1,6 +1,6 @@
 export class BuildLogger {
   log(...args: any[]) {
-     console.log(...args);
+    console.log(...args);
   }
 
   warn(...args: any[]) {
@@ -15,3 +15,5 @@ export class BuildLogger {
     console.debug(...args);
   }
 }
+
+export const logger : BuildLogger = new BuildLogger();

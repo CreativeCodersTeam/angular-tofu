@@ -3,18 +3,20 @@ import {
   BuildTask,
   BuildTaskFunction,
 } from './build-definition';
+import { BuildExecutionException } from './build-executor';
+import { logger } from './build-logger';
 import { CmdExecutor } from './cmd-executor';
 
 export class TheBuild extends BuildDefinition {
-  buildTasks: BuildTask[] = [
-    { name: 'runtargets', execute: async (buildContext) => {} },
-    {
-      name: 'runtargets2',
-      execute: async (buildContext) => {
-        console.log('hello');
-      },
-    },
-  ];
+  // buildTasks: BuildTask[] = [
+  //   { name: 'runtargets', execute: async (buildContext) => {} },
+  //   {
+  //     name: 'runtargets2',
+  //     execute: async (buildContext) => {
+  //       logger.log('hello');
+  //     },
+  //   },
+  // ];
 
   name: string = 'Angular Tofu Build';
 
@@ -23,22 +25,18 @@ export class TheBuild extends BuildDefinition {
 
     const cmd = new CmdExecutor(true);
 
-    // super.AddTask('runtargets', async () => {
-    //   console.log('Build task runtargets executed');
-    //   //cmd.execute('npx nx affected -t lint test build e2e');
-    // });
-
     this.tasks = [
       {
         name: 'runtargets',
         execute: async (buildContext) => {
-          console.log('Build task runtargets executed');
+          throw new BuildExecutionException('runtargets failed');
+          logger.log('Build task runtargets executed');
         },
       },
       {
         name: 'runtargets2',
         execute: async (buildContext) => {
-          console.log('hello runtargets2');
+          logger.log('hello runtargets2');
         },
       },
     ];
