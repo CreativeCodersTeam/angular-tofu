@@ -27,3 +27,6 @@ export abstract class BuildDefinition{
 export interface BuildContext{
 
 }
+
+export interface BuildDefinitionFactory extends BuildContext{
+}
