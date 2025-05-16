@@ -1,17 +1,29 @@
-interface BuildTaskResult {
+export interface BuildTaskResult {
   succeeded: boolean;
 }
 
-interface BuildTask {
-  execute: () => BuildTaskResult | void;
+export type BuildTaskFunction = (buildContext: BuildContext) => Promise<BuildTaskResult> | Promise<void>;
+
+export interface BuildTask {
+  name: string;
+  execute: BuildTaskFunction;
 }
 
-export class BuildDefinition{
-  tasks: {taskName: string; task: () => BuildTask | void}[] = [];
 
-  AddTask(taskName: string, task: () => BuildTask | void){
-    this.tasks.push({taskName, task});
+export abstract class BuildDefinition{
+  tasks: BuildTask[] = [];
+
+  abstract buildTasks: BuildTask[];
+
+  AddTask(taskName: string, task: BuildTaskFunction){
+    this.tasks.push({name: taskName, execute: task});
 
     return this;
   }
+
+  abstract name: string;
+}
+
+export interface BuildContext{
+
 }

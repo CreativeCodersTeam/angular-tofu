@@ -1,4 +1,6 @@
+import { BuildExecutor } from './build-executor';
 import { SimpleGitVersion } from './simple-git-version';
+import { TheBuild } from './the-build';
 
 async function main(args: string[]) {
   console.log('Arguments:', args);
@@ -11,4 +13,8 @@ async function main(args: string[]) {
   return version;
 }
 
-main(process.argv.slice(2));
+//main(process.argv.slice(2));
+
+BuildExecutor
+  .createInstance(process.argv.slice(2))
+  .run(new TheBuild());
