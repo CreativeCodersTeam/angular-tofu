@@ -45,7 +45,7 @@ export class BuildExecutor {
     logger.log();
     logger.log('Running build:', buildDefinition.name);
 
-    const buildContext = {};
+    const buildContext = {targets: targets};
 
     const buildTasks = this.findBuildTasks(buildDefinition, targets);
 

@@ -25,6 +25,6 @@ export abstract class BuildDefinition {
   abstract name: string;
 }
 
-export interface BuildContext {}
-
-export interface BuildDefinitionFactory extends BuildContext {}
+export interface BuildContext {
+  targets: string[];
+}

@@ -1,24 +1,11 @@
-import {
-  BuildDefinition,
-  BuildTask,
-  BuildTaskFunction,
-} from './build-definition';
+import { BuildDefinition } from './build-definition';
 import { BuildExecutionException } from './build-executor';
 import { logger } from './build-logger';
 import { CmdExecutor } from './cmd-executor';
 
 export class TheBuild extends BuildDefinition {
-  // buildTasks: BuildTask[] = [
-  //   { name: 'runtargets', execute: async (buildContext) => {} },
-  //   {
-  //     name: 'runtargets2',
-  //     execute: async (buildContext) => {
-  //       logger.log('hello');
-  //     },
-  //   },
-  // ];
 
-  name: string = 'Angular Tofu Build';
+  name = 'Angular Tofu Build';
 
   constructor() {
     super();
