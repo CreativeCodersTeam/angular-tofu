@@ -1,7 +1,7 @@
-import { BuildDefinition } from './build-definition';
-import { BuildExecutionException } from './build-executor';
-import { logger } from './build-logger';
-import { CmdExecutor } from './cmd-executor';
+import { BuildDefinition } from './build-it-lib/build-definition';
+import { BuildTargetFailedException } from './build-it-lib/build-executor';
+import { logger } from './build-it-lib/build-logger';
+import { CmdExecutor } from './build-it-lib/cmd-executor';
 
 export class TheBuild extends BuildDefinition {
 
@@ -16,7 +16,7 @@ export class TheBuild extends BuildDefinition {
       {
         name: 'runtargets',
         execute: async (buildContext) => {
-          throw new BuildExecutionException('runtargets failed');
+          throw new BuildTargetFailedException('runtargets failed');
           logger.log('Build task runtargets executed');
         },
       },
