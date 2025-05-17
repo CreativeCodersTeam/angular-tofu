@@ -12,7 +12,7 @@ export class TheBuild extends BuildDefinition {
 
     const cmd = new CmdExecutor(true);
 
-    this.tasks = [
+    this.targets = [
       {
         name: 'runtargets',
         execute: async (buildContext) => {

@@ -1,12 +1,9 @@
-import { BuildDefinition, BuildContext, BuildTask } from './build-definition';
+import { BuildDefinition, BuildContext, BuildTarget } from './build-definition';
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 import { logger } from './build-logger';
 
-export class BuildExecutionException extends Error {
-  ctor(message: string) {
-    this.message = message;
-  }
+export class BuildTargetFailedException extends Error {
 }
 
 export class BuildExecutor {
@@ -47,39 +44,39 @@ export class BuildExecutor {
 
     const buildContext = {targets: targets};
 
-    const buildTasks = this.findBuildTasks(buildDefinition, targets);
+    const buildTargets = this.findBuildTargets(buildDefinition, targets);
 
     logger.log('Build tasks for execution');
 
-    for (const buildTask of buildTasks) {
-      logger.log('-', buildTask.name);
+    for (const buildTarget of buildTargets) {
+      logger.log('-', buildTarget.name);
     }
 
-    for (const buildTask of buildTasks) {
-      await this.executeBuildTask(buildContext, buildTask);
+    for (const buildTarget of buildTargets) {
+      await this.executeBuildTarget(buildContext, buildTarget);
     }
   }
 
-  private async executeBuildTask(
+  private async executeBuildTarget(
     buildContext: BuildContext,
-    buildTask: BuildTask
+    buildTarget: BuildTarget
   ): Promise<void> {
-    logger.log('Executing build task:', buildTask.name);
+    logger.log('Executing build target:', buildTarget.name);
 
     try {
-      await buildTask.execute(buildContext);
+      await buildTarget.execute(buildContext);
     }
     catch (error) {
-      if (error instanceof BuildExecutionException) {
-        logger.error('Build task failed:', error.message);
+      if (error instanceof BuildTargetFailedException) {
+        logger.error('Build target failed:', error.message);
       } else{
-        logger.error('Runtime error:', error.message);
+        logger.error('Build target runtime error:', error.message);
       }
     }
   }
 
-  private findBuildTasks(buildDefinition: BuildDefinition, targets: string[]) {
-    return buildDefinition.tasks.filter((buildTask) =>
+  private findBuildTargets(buildDefinition: BuildDefinition, targets: string[]) {
+    return buildDefinition.targets.filter((buildTask) =>
       targets.includes(buildTask.name)
     );
   }
