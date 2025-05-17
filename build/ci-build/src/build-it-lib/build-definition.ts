@@ -23,6 +23,6 @@ export abstract class BuildDefinition {
   abstract name: string;
 }
 
-export interface BuildContext {
+export class BuildContext {
   targets: string[];
 }

@@ -9,6 +9,8 @@
   ],
   "compilerOptions": {
     "esModuleInterop": true,
-    "target": "ES2022"
+    "target": "ES2022",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
   }
 }

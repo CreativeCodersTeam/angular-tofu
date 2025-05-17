@@ -1,17 +1,24 @@
 import { BuildDefinition, BuildContext, BuildTarget } from './build-definition';
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
-import { logger } from './build-logger';
+import { BuildLogger } from './build-logger';
+import { inject, injectable } from 'tsyringe';
 
 export class BuildTargetFailedException extends Error {
 }
 
-export class BuildExecutor {
-  static createInstance(cliName: string) {
-    return new BuildExecutor(cliName);
-  }
+@injectable()
+export class BuildExecutor<T extends BuildContext> {
+  private cliName: string;
 
-  private constructor(private cliName: string) {}
+  constructor(@inject(BuildLogger) private logger: BuildLogger,
+              @inject(BuildContext) private buildContext: T){}
+
+  setup(cliName: string) {
+    this.cliName = cliName;
+
+    return this;
+  }
 
   async run(buildDefinition: BuildDefinition): Promise<void> {
     await yargs()
@@ -37,19 +44,17 @@ export class BuildExecutor {
   }
 
   private async runBuild(buildDefinition: BuildDefinition, targets: string[]) {
-    logger.log('CreativeCoders build-it');
-    logger.log('=======================');
-    logger.log();
-    logger.log('Running build:', buildDefinition.name);
 
     const buildContext = {targets: targets};
 
     const buildTargets = this.findBuildTargets(buildDefinition, targets);
 
-    logger.log('Build tasks for execution');
+    this.logger.log('Build tasks for execution');
+
+    this.buildContext.targets = buildTargets.map(t => t.name);
 
     for (const buildTarget of buildTargets) {
-      logger.log('-', buildTarget.name);
+      this.logger.log('-', buildTarget.name);
     }
 
     for (const buildTarget of buildTargets) {
@@ -61,16 +66,16 @@ export class BuildExecutor {
     buildContext: BuildContext,
     buildTarget: BuildTarget
   ): Promise<void> {
-    logger.log('Executing build target:', buildTarget.name);
+    this.logger.log('Executing build target:', buildTarget.name);
 
     try {
       await buildTarget.execute(buildContext);
     }
     catch (error) {
       if (error instanceof BuildTargetFailedException) {
-        logger.error('Build target failed:', error.message);
+        this.logger.error('Build target failed:', error.message);
       } else{
-        logger.error('Build target runtime error:', error.message);
+        this.logger.error('Build target runtime error:', error.message);
       }
     }
   }
@@ -80,11 +85,4 @@ export class BuildExecutor {
       targets.includes(buildTask.name)
     );
   }
-}
-
-export async function runBuildIt(
-  cliName: string,
-  buildDefinition: BuildDefinition
-): Promise<void> {
-  await BuildExecutor.createInstance(cliName).run(buildDefinition);
 }

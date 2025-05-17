@@ -1,4 +1,6 @@
-import { runBuildIt } from './build-it-lib/build-executor';
-import { TheBuild } from './the-build';
+import "reflect-metadata"
+import { runBuildEngine } from './build-it-lib/build-engine';
+import { TheBuild, TheBuildContext } from './the-build';
+import { container } from 'tsyringe';
 
-runBuildIt('ci-build', new TheBuild());
+runBuildEngine<TheBuildContext, TheBuild>('ci-build', container.resolve(TheBuild));

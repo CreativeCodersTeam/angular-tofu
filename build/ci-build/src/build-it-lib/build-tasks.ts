@@ -11,9 +11,9 @@ export class BuildTasks {
     throw new BuildTargetFailedException(message);
   }
 
-  protected async execute(action: BuildTaskAction){
-    try {
-      await action();
-    }
+  protected execute(action: BuildTaskAction){
+    // try {
+    //   //await action();
+    // }
   }
 }

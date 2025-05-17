@@ -1,5 +1,15 @@
-export class NxLib {
-  constructor(private dryRun: boolean, private readonly base?: string) {}
+import { BuildLogger } from '../build-logger';
+import { BuildTasks } from '../build-tasks';
+import { inject } from 'tsyringe';
+
+export class NxTasks extends BuildTasks {
+  dryRun = false;
+  base = '';
+
+  constructor(@inject(BuildLogger) private logger: BuildLogger) {
+    super();
+
+  }
 
   async executeNxCommand(command: string): Promise<string> {
     const { exec } = await import('child_process');
