@@ -1,18 +1,19 @@
-import { BuildDefinition, BuildContext, BuildTarget } from './build-definition';
+import { BuildDefinition, BuildTarget } from './build-definition';
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 import { BuildLogger } from './build-logger';
 import { inject, injectable } from 'tsyringe';
+import { BuildContext } from './build-context';
 
 export class BuildTargetFailedException extends Error {
 }
 
 @injectable()
-export class BuildExecutor<T extends BuildContext> {
+export class BuildExecutor {
   private cliName: string;
 
   constructor(@inject(BuildLogger) private logger: BuildLogger,
-              @inject(BuildContext) private buildContext: T){}
+              @inject(BuildContext) private buildContext: BuildContext){}
 
   setup(cliName: string) {
     this.cliName = cliName;
@@ -45,8 +46,6 @@ export class BuildExecutor<T extends BuildContext> {
 
   private async runBuild(buildDefinition: BuildDefinition, targets: string[]) {
 
-    const buildContext = {targets: targets};
-
     const buildTargets = this.findBuildTargets(buildDefinition, targets);
 
     this.logger.log('Build tasks for execution');
@@ -58,18 +57,17 @@ export class BuildExecutor<T extends BuildContext> {
     }
 
     for (const buildTarget of buildTargets) {
-      await this.executeBuildTarget(buildContext, buildTarget);
+      await this.executeBuildTarget(buildTarget);
     }
   }
 
   private async executeBuildTarget(
-    buildContext: BuildContext,
     buildTarget: BuildTarget
   ): Promise<void> {
     this.logger.log('Executing build target:', buildTarget.name);
 
     try {
-      await buildTarget.execute(buildContext);
+      await buildTarget.execute(this.buildContext);
     }
     catch (error) {
       if (error instanceof BuildTargetFailedException) {

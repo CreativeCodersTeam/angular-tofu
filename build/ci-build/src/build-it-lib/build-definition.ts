@@ -1,3 +1,5 @@
+import { BuildContext } from "./build-context";
+
 export interface BuildTargetResult {
   succeeded: boolean;
 }
@@ -9,6 +11,7 @@ export type BuildTargetFunction = (
 export interface BuildTarget {
   name: string;
   execute: BuildTargetFunction;
+  dependsOn?: BuildTarget[];
 }
 
 export abstract class BuildDefinition {
@@ -21,8 +24,4 @@ export abstract class BuildDefinition {
   }
 
   abstract name: string;
-}
-
-export class BuildContext {
-  targets: string[];
 }

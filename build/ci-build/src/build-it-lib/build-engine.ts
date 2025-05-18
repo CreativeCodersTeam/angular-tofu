@@ -1,12 +1,12 @@
-import { container, inject, injectable } from 'tsyringe';
+import { container, inject, singleton } from 'tsyringe';
 import { BuildExecutor } from './build-executor';
-import { BuildContext, BuildDefinition } from './build-definition';
+import { BuildDefinition } from './build-definition';
 import { BuildLogger } from './build-logger';
 
-@injectable()
-export class BuildEngine<T extends BuildContext> {
+@singleton()
+export class BuildEngine {
   constructor(
-    @inject(BuildExecutor) private buildExecutor: BuildExecutor<T>,
+    @inject(BuildExecutor) private buildExecutor: BuildExecutor,
     @inject(BuildLogger) private logger: BuildLogger
   ) {}
 
@@ -21,13 +21,11 @@ export class BuildEngine<T extends BuildContext> {
   }
 }
 
-export async function runBuildEngine<T extends BuildContext, TBuildDefinition extends BuildDefinition>(
+export async function runBuildEngine<TBuildDefinition extends BuildDefinition>(
   cliName: string,
   buildDefinition: TBuildDefinition
 ) {
-  const buildEngine = container.resolve(BuildEngine<T>);
-
-  //container.registerSingleton()
+  const buildEngine = container.resolve(BuildEngine);
 
   await buildEngine.run(cliName, buildDefinition);
 }
