@@ -1,9 +1,10 @@
 import { BuildContext } from '../build-context';
 import { BuildLogger } from '../build-logger';
 import { BuildTasks } from '../build-tasks';
-import { inject } from 'tsyringe';
+import { inject, injectable } from 'tsyringe';
 import { CmdExecutor } from '../cmd-executor';
 
+@injectable()
 export class NxTasks extends BuildTasks {
   dryRun = false;
   base = '';
