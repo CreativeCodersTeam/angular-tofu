@@ -1,4 +1,7 @@
 // Calculate version based on last git tag and commit count since last version tag
+import { injectable } from 'tsyringe';
+
+@injectable()
 export class SimpleGitVersion {
   async getVersion(prerelease: string): Promise<string> {
     const { exec } = await import('child_process');

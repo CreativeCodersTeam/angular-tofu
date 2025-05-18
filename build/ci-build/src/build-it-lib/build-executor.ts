@@ -5,15 +5,16 @@ import { BuildLogger } from './build-logger';
 import { inject, injectable } from 'tsyringe';
 import { BuildContext } from './build-context';
 
-export class BuildTargetFailedException extends Error {
-}
+export class BuildTargetFailedException extends Error {}
 
 @injectable()
 export class BuildExecutor {
   private cliName: string;
 
-  constructor(@inject(BuildLogger) private logger: BuildLogger,
-              @inject(BuildContext) private buildContext: BuildContext){}
+  constructor(
+    @inject(BuildLogger) private logger: BuildLogger,
+    @inject(BuildContext) private buildContext: BuildContext
+  ) {}
 
   setup(cliName: string) {
     this.cliName = cliName;
@@ -45,41 +46,49 @@ export class BuildExecutor {
   }
 
   private async runBuild(buildDefinition: BuildDefinition, targets: string[]) {
-
     const buildTargets = this.findBuildTargets(buildDefinition, targets);
 
-    this.logger.log('Build tasks for execution');
+    this.buildContext.targets = buildTargets.map((t) => t.name);
 
-    this.buildContext.targets = buildTargets.map(t => t.name);
+    this.logger
+      .log('Build tasks for execution')
+      .logMany(buildTargets, (target) => `  - ${target.name}`)
+      .log();
 
     for (const buildTarget of buildTargets) {
-      this.logger.log('-', buildTarget.name);
-    }
+      if (!await this.executeBuildTarget(buildTarget)){
+        this.logger.log('Build failed');
 
-    for (const buildTarget of buildTargets) {
-      await this.executeBuildTarget(buildTarget);
-    }
-  }
-
-  private async executeBuildTarget(
-    buildTarget: BuildTarget
-  ): Promise<void> {
-    this.logger.log('Executing build target:', buildTarget.name);
-
-    try {
-      await buildTarget.execute(this.buildContext);
-    }
-    catch (error) {
-      if (error instanceof BuildTargetFailedException) {
-        this.logger.error('Build target failed:', error.message);
-      } else{
-        this.logger.error('Build target runtime error:', error.message);
+        break;
       }
     }
   }
 
-  private findBuildTargets(buildDefinition: BuildDefinition, targets: string[]) {
-    if (!targets || targets.length === 0){
+  private async executeBuildTarget(buildTarget: BuildTarget): Promise<boolean> {
+    this.logger.log('Executing build target:', buildTarget.name);
+
+    try {
+      await buildTarget.execute(this.buildContext);
+
+      return true;
+    } catch (error) {
+      if (error instanceof BuildTargetFailedException) {
+        this.logger.error('Build target failed:', error.message);
+
+        return false;
+      } else {
+        this.logger.error('Build target runtime error:', error.message);
+
+        throw error;
+      }
+    }
+  }
+
+  private findBuildTargets(
+    buildDefinition: BuildDefinition,
+    targets: string[]
+  ) {
+    if (!targets || targets.length === 0) {
       return [];
     }
 

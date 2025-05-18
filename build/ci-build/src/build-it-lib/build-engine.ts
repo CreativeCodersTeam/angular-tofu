@@ -15,7 +15,11 @@ export class BuildEngine {
       .log('CreativeCoders build-it')
       .log('=======================')
       .log()
-      .log('Running build:', buildDefinition.name);
+      .log('Running build:', buildDefinition.name)
+      .log()
+      .log('Available build targets:')
+      .logMany(buildDefinition.targets, target => `  - ${target.name}`)
+      .log();
 
     await this.buildExecutor.setup(cliName).run(buildDefinition);
   }

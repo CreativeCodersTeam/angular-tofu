@@ -1,9 +1,9 @@
 import { BuildContext } from './build-it-lib/build-context';
 import { BuildDefinition, BuildTarget } from './build-it-lib/build-definition';
-import { BuildTargetFailedException } from './build-it-lib/build-executor';
 import { BuildLogger } from './build-it-lib/build-logger';
 import { CmdExecutor } from './build-it-lib/cmd-executor';
 import { inject, singleton } from 'tsyringe';
+import { NpmInstallCiOptions, NpmTasks } from './build-it-lib/tasks/npm-tasks';
 
 @singleton()
 export class TheBuild extends BuildDefinition {
@@ -11,7 +11,9 @@ export class TheBuild extends BuildDefinition {
   name = 'Angular Tofu Build';
 
   constructor(@inject(BuildContext) private buildContext: BuildContext,
-              @inject(BuildLogger) private logger: BuildLogger,) {
+              @inject(BuildLogger) private logger: BuildLogger,
+              @inject(NpmTasks) private npmTasks: NpmTasks,
+              @inject(CmdExecutor) private cmdExecutor: CmdExecutor,) {
     super();
 
     this.targets = [
@@ -24,7 +26,12 @@ export class TheBuild extends BuildDefinition {
   installDeps: BuildTarget = {
     name: 'installDeps',
     execute: async (buildContext) => {
-      this.logger.log('hello installDeps');
+      this.logger.log('Install all dependencies');
+
+      await this.npmTasks
+        .installCi(new NpmInstallCiOptions().setLegacyPeerDeps(true));
+
+      await this.cmdExecutor.execute('npx playwright install --with-deps');
     }
   }
 

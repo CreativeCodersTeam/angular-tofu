@@ -47,6 +47,20 @@ export class BuildLogger {
     return this;
   }
 
+  logMany<T>(items: T[], logText: (item: T) => string){
+    if (!this.isLogEnabled) {
+      return this;
+    }
+
+    for (const item of items) {
+      const message = logText(item);
+
+      console.log(message);
+    }
+
+    return this;
+  }
+
   warn(...args: any[]) {
     if (!this.isWarnEnabled) {
       return this;

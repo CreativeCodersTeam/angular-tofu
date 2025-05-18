@@ -11,6 +11,7 @@ export type BuildTaskAction = (
 export abstract class BuildTasks {
   constructor(protected context: BuildContext, protected logger: BuildLogger) {
   }
+
   failed(message?: string){
     throw new BuildTargetFailedException(message);
   }
