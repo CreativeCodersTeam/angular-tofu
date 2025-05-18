@@ -15,8 +15,8 @@ export class NxTasks extends BuildTasks {
 
   }
 
-  async executeNxCommand(command: string): Promise<string> {
-    return await this.cmdExecutor.execute(`npx nx ${command}`);
+  async executeNxCommand(command: string) {
+    return await this.cmdExecutor.executeStream(`npx nx ${command}`);
   }
 
   async runTargetForAffected(targets: string[]) {

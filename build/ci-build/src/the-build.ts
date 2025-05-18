@@ -4,6 +4,7 @@ import { BuildLogger } from './build-it-lib/build-logger';
 import { CmdExecutor } from './build-it-lib/cmd-executor';
 import { inject, singleton } from 'tsyringe';
 import { NpmInstallCiOptions, NpmTasks } from './build-it-lib/tasks/npm-tasks';
+import { NxTasks } from './build-it-lib/tasks/nx-tasks';
 
 @singleton()
 export class TheBuild extends BuildDefinition {
@@ -13,13 +14,14 @@ export class TheBuild extends BuildDefinition {
   constructor(@inject(BuildContext) private buildContext: BuildContext,
               @inject(BuildLogger) private logger: BuildLogger,
               @inject(NpmTasks) private npmTasks: NpmTasks,
+              @inject(NxTasks) private nxTasks: NxTasks,
               @inject(CmdExecutor) private cmdExecutor: CmdExecutor,) {
     super();
 
     this.targets = [
       this.installDeps,
       this.setVersion,
-      this.runNpxTargets,
+      this.runNxTargets,
     ];
   }
 
@@ -43,10 +45,10 @@ export class TheBuild extends BuildDefinition {
     dependsOn: [this.installDeps]
   }
 
-  runNpxTargets: BuildTarget = {
-    name: 'runNpxTargets',
+  runNxTargets: BuildTarget = {
+    name: 'runNxTargets',
     execute: async (buildContext) => {
-      this.logger.log('hello runNpxTargets');
+      await this.nxTasks.runTargetForAffected(['lint', 'test', 'build', 'e2e']);
     },
     dependsOn: [this.setVersion]
   }
