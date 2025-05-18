@@ -28,8 +28,6 @@ export class NpmTasks extends BuildTasks {
       const args = options.legacyPeerDeps ? ['--legacy-peer-deps'] : [];
 
       await this.cmdExecutor.executeStream('npm ci', args);
-
-      //await this.cmdExecutor.execute('exit 1');
     });
 
   }
