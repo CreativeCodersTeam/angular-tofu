@@ -53,7 +53,7 @@ export class CmdExecutor {
 
       // stdout in Echtzeit zur Konsole streamen
       childProcess.stdout.on('data', (data) => {
-        process.stdout.write(data);
+        process.stdout.write(data.toString());
         //this.logger.log(data); // Direkt auf die Konsole schreiben
       });
 
