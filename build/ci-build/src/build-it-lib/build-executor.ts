@@ -79,6 +79,10 @@ export class BuildExecutor {
   }
 
   private findBuildTargets(buildDefinition: BuildDefinition, targets: string[]) {
+    if (!targets || targets.length === 0){
+      return [];
+    }
+
     return buildDefinition.targets.filter((buildTask) =>
       targets.includes(buildTask.name)
     );
