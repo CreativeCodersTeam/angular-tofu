@@ -7,9 +7,9 @@ export class NxTasks extends BuildTasks {
   dryRun = false;
   base = '';
 
-  constructor(@inject(BuildLogger) private logger: BuildLogger,
+  constructor(@inject(BuildLogger) logger: BuildLogger,
               @inject(BuildContext) context: BuildContext,) {
-    super(context);
+    super(context, logger);
 
   }
 
