@@ -31,7 +31,7 @@ export class TheBuild extends BuildDefinition {
       await this.npmTasks
         .installCi(new NpmInstallCiOptions().setLegacyPeerDeps(true));
 
-      await this.cmdExecutor.execute('npx playwright install --with-deps');
+      await this.cmdExecutor.executeStream('npx playwright install --with-deps');
     }
   }
 
