@@ -1,9 +1,14 @@
 // Calculate version based on last git tag and commit count since last version tag
-import { injectable } from 'tsyringe';
+import { inject, injectable } from 'tsyringe';
+import { BuildLogger } from './build-logger';
+
+export const GIT_VERSION_PARAM = 'GitVersion';
 
 @injectable()
 export class SimpleGitVersion {
-  async getVersion(prerelease: string): Promise<string> {
+  constructor(@inject(BuildLogger) private readonly logger: BuildLogger) {}
+
+  async getVersion(prerelease?: string): Promise<string> {
     const { exec } = await import('child_process');
     const { promisify } = await import('util');
     const execPromise = promisify(exec);
@@ -56,15 +61,15 @@ export class SimpleGitVersion {
     minor: string;
     patch: string;
     prerelease: string;
-    buildmetadata: string;
+    buildMetaData: string;
   } {
     const versionParts = version.split('-')[0].split('.');
     const major = versionParts.length >= 1 ? versionParts[0] : '';
     const minor = versionParts.length >= 2 ? versionParts[1] : '';
     const patch = versionParts.length >= 3 ? versionParts[2] : '';
     const prerelease = version.split('-')[1] || '';
-    const buildmetadata = version.split('+')[1] || '';
+    const buildMetaData = version.split('+')[1] || '';
 
-    return { major, minor, patch, prerelease, buildmetadata };
+    return { major, minor, patch, prerelease, buildMetaData };
   }
 }

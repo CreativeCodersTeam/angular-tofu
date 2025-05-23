@@ -12,8 +12,8 @@ export class BuildExecutor {
   private cliName: string;
 
   constructor(
-    @inject(BuildLogger) private logger: BuildLogger,
-    @inject(BuildContext) private buildContext: BuildContext
+    @inject(BuildLogger) private readonly logger: BuildLogger,
+    @inject(BuildContext) private readonly buildContext: BuildContext
   ) {}
 
   setup(cliName: string) {
@@ -25,8 +25,9 @@ export class BuildExecutor {
   async run(buildDefinition: BuildDefinition): Promise<void> {
     await yargs()
       .scriptName(this.cliName)
+      .strict(false)
       .command(
-        'exec [targets...]',
+        'run [targets...]',
         '',
         (yargs) => yargs.positional('targets', { type: 'string', array: true }),
         async (yargs) => {
@@ -56,7 +57,7 @@ export class BuildExecutor {
       .log();
 
     for (const buildTarget of buildTargets) {
-      if (!await this.executeBuildTarget(buildTarget)){
+      if (!(await this.executeBuildTarget(buildTarget))) {
         this.logger.log('Build failed');
 
         break;
@@ -73,11 +74,19 @@ export class BuildExecutor {
       return true;
     } catch (error) {
       if (error instanceof BuildTargetFailedException) {
-        this.logger.error('Build target failed:', error.message);
+        this.logger.error(
+          'Build target failed:',
+          buildTarget.name,
+          error.message
+        );
 
-        return false;
+        throw error;
       } else {
-        this.logger.error('Build target runtime error:', error.message);
+        this.logger.error(
+          'Build target runtime error:',
+          buildTarget.name,
+          error.message
+        );
 
         throw error;
       }
