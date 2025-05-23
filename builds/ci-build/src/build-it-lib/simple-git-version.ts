@@ -1,25 +1,36 @@
 // Calculate version based on last git tag and commit count since last version tag
 import { inject, injectable } from 'tsyringe';
 import { BuildLogger } from './build-logger';
+import { exec } from 'child_process';
+import { promisify } from 'util';
 
 export const GIT_VERSION_PARAM = 'GitVersion';
 
 @injectable()
 export class SimpleGitVersion {
-  constructor(@inject(BuildLogger) private readonly logger: BuildLogger) {}
+  private settings: GitVersionSettings;
+  private execPromise: (
+    command: string
+  ) => Promise<{ stdout: string; stderr: string }>;
+
+  constructor(@inject(BuildLogger) private readonly logger: BuildLogger) {
+    this.settings = new GitVersionSettings();
+
+    this.execPromise = promisify(exec);
+  }
 
   async getVersion(prerelease?: string): Promise<string> {
-    const { exec } = await import('child_process');
-    const { promisify } = await import('util');
-    const execPromise = promisify(exec);
+    // const { exec } = await import('child_process');
+    // const { promisify } = await import('util');
+    // const execPromise = promisify(exec);
 
     try {
-      const { stdout } = await execPromise(
+      const { stdout } = await this.execPromise(
         'git describe --tags --match "v[0-9]*" --abbrev=0'
       );
       const lastTag = stdout.trim();
       const lastVersionTag = lastTag.replace(/^v/, '');
-      const { stdout: commitCount } = await execPromise(
+      const { stdout: commitCount } = await this.execPromise(
         `git rev-list --count ${lastTag}..HEAD`
       );
 
@@ -56,6 +67,14 @@ export class SimpleGitVersion {
     return version ? `${version}.${versionPart}` : versionPart;
   }
 
+  async getLastVersionTag() {
+    const { stdout } = await this.execPromise(
+      'git describe --tags --match "v[0-9]*" --abbrev=0'
+    );
+
+    return stdout.trim();
+  }
+
   private splitVersion(version: string): {
     major: string;
     minor: string;
@@ -72,4 +91,39 @@ export class SimpleGitVersion {
 
     return { major, minor, patch, prerelease, buildMetaData };
   }
+}
+
+export class GitVersionSettings {
+  branchRules: GitVersionBranchRule[] = [
+    {
+      regex: /^(feature|bugfix|hotfix)\/.*$/,
+      isReleaseBranch: false,
+      increment: 'patch',
+      preReleaseTag: 'alpha',
+    },
+    {
+      regex: /^release\/.*$/,
+      isReleaseBranch: true,
+      increment: 'patch',
+      preReleaseTag: 'beta',
+    },
+    {
+      regex: /^main$/,
+      isReleaseBranch: true,
+      increment: 'patch',
+      preReleaseTag: '',
+    },
+  ];
+
+  mainBranch = 'main';
+}
+
+export interface GitVersionBranchRule {
+  regex: RegExp;
+
+  isReleaseBranch: boolean;
+
+  increment: 'major' | 'minor' | 'patch';
+
+  preReleaseTag: string;
 }
