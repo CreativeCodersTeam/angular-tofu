@@ -8,8 +8,8 @@ export const GIT_VERSION_PARAM = 'GitVersion';
 
 @injectable()
 export class SimpleGitVersion {
-  private settings: GitVersionSettings;
-  private execPromise: (
+  private readonly settings: GitVersionSettings;
+  private readonly execPromise: (
     command: string
   ) => Promise<{ stdout: string; stderr: string }>;
 
@@ -20,10 +20,6 @@ export class SimpleGitVersion {
   }
 
   async getVersion(prerelease?: string): Promise<string> {
-    // const { exec } = await import('child_process');
-    // const { promisify } = await import('util');
-    // const execPromise = promisify(exec);
-
     try {
       const { stdout } = await this.execPromise(
         'git describe --tags --match "v[0-9]*" --abbrev=0'
