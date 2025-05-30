@@ -8,8 +8,8 @@ import { spawn } from 'node:child_process';
 @injectable()
 export class CmdExecutor {
   constructor(
-    @inject(BuildContext) private buildContext: BuildContext,
-    @inject(BuildLogger) private logger: BuildLogger
+    @inject(BuildContext) private readonly buildContext: BuildContext,
+    @inject(BuildLogger) private readonly logger: BuildLogger
   ) {}
 
   async execute(command: string, args?: string[]): Promise<string> {
@@ -48,7 +48,7 @@ export class CmdExecutor {
       // Shell-Option true ermöglicht komplexe Befehle
       const childProcess = spawn(command, cmdArgs, {
         shell: true,
-        stdio: ['inherit', 'pipe', 'pipe'] // stdin von parent übernehmen, stdout und stderr pipen
+        stdio: ['inherit', 'pipe', 'pipe'], // stdin von parent übernehmen, stdout und stderr pipen
       });
 
       // stdout in Echtzeit zur Konsole streamen
@@ -66,7 +66,11 @@ export class CmdExecutor {
         const successful = code === 0;
 
         if (!successful) {
-          this.logger.error(`Befehl fehlgeschlagen mit Code ${code}: ${command} ${cmdArgs.join(' ')}`);
+          this.logger.error(
+            `Befehl fehlgeschlagen mit Code ${code}: ${command} ${cmdArgs.join(
+              ' '
+            )}`
+          );
         }
 
         resolve(successful);
@@ -78,6 +82,5 @@ export class CmdExecutor {
         resolve(false);
       });
     });
-
   }
 }

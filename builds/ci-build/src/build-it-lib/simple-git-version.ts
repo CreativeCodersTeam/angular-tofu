@@ -3,6 +3,7 @@ import { inject, injectable } from 'tsyringe';
 import { BuildLogger } from './build-logger';
 import { exec } from 'child_process';
 import { promisify } from 'util';
+import { GitTools } from './git-tools';
 
 export const GIT_VERSION_PARAM = 'GitVersion';
 
@@ -13,7 +14,10 @@ export class SimpleGitVersion {
     command: string
   ) => Promise<{ stdout: string; stderr: string }>;
 
-  constructor(@inject(BuildLogger) private readonly logger: BuildLogger) {
+  constructor(
+    @inject(BuildLogger) private readonly logger: BuildLogger,
+    @inject(GitTools) private readonly gitTools: GitTools
+  ) {
     this.settings = new GitVersionSettings();
 
     this.execPromise = promisify(exec);
@@ -21,15 +25,10 @@ export class SimpleGitVersion {
 
   async getVersion(prerelease?: string): Promise<string> {
     try {
-      const { stdout } = await this.execPromise(
-        'git describe --tags --match "v[0-9]*" --abbrev=0'
-      );
-      const lastTag = stdout.trim();
+      const lastTag = await this.gitTools.getLastVersionTag();
       const lastVersionTag = lastTag.replace(/^v/, '');
-      const { stdout: commitCount } = await this.execPromise(
-        `git rev-list --count ${lastTag}..HEAD`
-      );
-
+      const commitCount = await this.gitTools.getCommitCountSinceTag(lastTag);
+      
       const versionParts = this.splitVersion(lastVersionTag);
 
       let version = '';
