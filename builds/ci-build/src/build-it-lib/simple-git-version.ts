@@ -7,6 +7,39 @@ import { GitTools } from './git-tools';
 
 export const GIT_VERSION_PARAM = 'GitVersion';
 
+export class Version {
+  constructor(
+    public major: number,
+    public minor: number,
+    public patch: number,
+    public prerelease?: string,
+    public buildMetaData?: string
+  ) {}
+
+  static parse(version: string): Version {
+    const [versionPart, buildMetaDataPart] = version
+      .split('+')
+      .map((part) => part.trim());
+    const [versionNumberPart, prereleasePart] = versionPart
+      .split('-')
+      .map((part) => part.trim());
+    const [major, minor, patch] = versionNumberPart.split('.').map(Number);
+
+    return new Version(major, minor, patch, prereleasePart, buildMetaDataPart);
+  }
+
+  toString(): string {
+    let version = `${this.major}.${this.minor}.${this.patch}`;
+    if (this.prerelease) {
+      version += `-${this.prerelease}`;
+    }
+    if (this.buildMetaData) {
+      version += `+${this.buildMetaData}`;
+    }
+    return version;
+  }
+}
+
 @injectable()
 export class SimpleGitVersion {
   private readonly settings: GitVersionSettings;
@@ -23,28 +56,22 @@ export class SimpleGitVersion {
     this.execPromise = promisify(exec);
   }
 
-  async getVersion(prerelease?: string): Promise<string> {
+  async getVersion(): Promise<Version> {
     try {
       const lastTag = await this.gitTools.getLastVersionTag();
       const lastVersionTag = lastTag.replace(/^v/, '');
-      const commitCount = await this.gitTools.getCommitCountSinceTag(lastTag);
-      
-      const versionParts = this.splitVersion(lastVersionTag);
+      const commitCount = Number(
+        await this.gitTools.getCommitCountSinceTag(lastTag)
+      );
 
-      let version = '';
-      version = this.concatVersion(version, versionParts.major, '0');
-      version = this.concatVersion(version, versionParts.minor, '0');
-      version = this.concatVersion(version, versionParts.patch, commitCount);
+      const newVersion = Version.parse(lastVersionTag);
+      this.logger.log('Last version:', newVersion.toString());
 
-      if (prerelease) {
-        version = `${version}-${prerelease}`;
+      if (commitCount >= 0) {
+        newVersion.buildMetaData = commitCount.toString();
       }
 
-      if (versionParts.patch) {
-        version = `${version}+${commitCount}`;
-      }
-
-      return version;
+      return newVersion;
     } catch (error) {
       console.error('Error getting version:', error);
 

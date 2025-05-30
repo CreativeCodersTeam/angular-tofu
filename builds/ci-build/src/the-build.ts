@@ -48,7 +48,10 @@ export class TheBuild extends BuildDefinition {
     name: 'setVersion',
     execute: async (buildContext) => {
       this.logger.log('setVersion');
-      this.logger.log('GitVersion:', await this.gitVersion.value.getVersion());
+      this.logger.log(
+        'GitVersion:',
+        (await this.gitVersion.value.getVersion()).toString()
+      );
     },
     dependsOn: [this.installDeps],
   };
