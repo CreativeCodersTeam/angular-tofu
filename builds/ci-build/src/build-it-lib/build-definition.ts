@@ -22,38 +22,37 @@ export abstract class BuildDefinition {
 
   targets: BuildTarget[] = [];
 
-  constructor() {
-    this.targets = this.createTargets();
-    this.initTargets();
-  }
-
-  private initTargets() {
+  protected initTargets() {
     for (const target of this.targets) {
-      this.targetDepGraph.addNode(target.name, target);
+      this.targetDepGraph.addNode(target.name.toLowerCase(), target);
     }
 
     for (const target of this.targets) {
       if (target.dependsOn) {
         for (const dependency of target.dependsOn) {
-          this.targetDepGraph.addDependency(target.name, dependency.name);
+          this.targetDepGraph.addDependency(
+            target.name.toLowerCase(),
+            dependency.name.toLowerCase()
+          );
         }
       }
     }
   }
 
-  getDependencies(targetNames: string[]): BuildTarget[] {
-    const allTargets = targetNames.flatMap((name) => {
-      return this.targetDepGraph
-        .dependenciesOf(name)
-        .map((name) => this.targetDepGraph.getNodeData(name));
-    });
+  getWithDependencies(targetNames: string[]): BuildTarget[] {
+    const allTargets = targetNames
+      .map((x) => x.toLowerCase())
+      .flatMap((name) => {
+        return this.targetDepGraph
+          .dependenciesOf(name)
+          .concat(name)
+          .map((name) => this.targetDepGraph.getNodeData(name));
+      });
 
     const targets = new Set<BuildTarget>(allTargets);
 
     return [...targets];
   }
-
-  abstract createTargets(): BuildTarget[];
 
   abstract name: string;
 }

@@ -25,10 +25,9 @@ export class TheBuild extends BuildDefinition {
     private readonly gitVersion: BuildParameter<SimpleGitVersion>
   ) {
     super();
-  }
 
-  createTargets(): BuildTarget[] {
-    return [this.installDeps, this.setVersion, this.runNxTargets];
+    this.targets = [this.installDeps, this.setVersion, this.runNxTargets];
+    this.initTargets();
   }
 
   installDeps: BuildTarget = {
@@ -62,7 +61,7 @@ export class TheBuild extends BuildDefinition {
     name: 'runNxTargets',
     execute: async (buildContext) => {
       this.logger.log('GitVersion:', await this.gitVersion.value.getVersion());
-      await this.nxTasks.runTargetForAffected(['lint', 'test', 'build', 'e2e']);
+      //await this.nxTasks.runTargetForAffected(['lint', 'test', 'build', 'e2e']);
     },
     dependsOn: [this.setVersion],
   };

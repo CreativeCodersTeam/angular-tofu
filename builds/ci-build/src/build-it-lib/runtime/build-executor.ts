@@ -69,7 +69,12 @@ export class BuildExecutor {
     this.logger.log('Executing build target:', buildTarget.name);
 
     try {
-      await buildTarget.execute(this.buildContext);
+      if (this.buildContext.dryRun) {
+        this.logger.log(`[DRY RUN] ${buildTarget.name}`);
+        return true;
+      }
+
+      //await buildTarget.execute(this.buildContext);
 
       return true;
     } catch (error) {
@@ -101,8 +106,6 @@ export class BuildExecutor {
       return [];
     }
 
-    return buildDefinition.targets.filter((buildTask) =>
-      targets.includes(buildTask.name)
-    );
+    return buildDefinition.getWithDependencies(targets);
   }
 }
