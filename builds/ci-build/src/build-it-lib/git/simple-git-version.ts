@@ -13,7 +13,7 @@ export const GIT_VERSION_PARAM = 'GitVersion';
 
 interface VersionCalculationInfo {
   lastTag: string;
-  lastVersionTag: string;
+  lastVersionFromTag: string;
   commitCountSinceLastTag: number;
   branchName: string;
   branchRule: GitVersionBranchRule | undefined;
@@ -56,7 +56,7 @@ export class SimpleGitVersion {
 
       this.applyBranchRule({
         lastTag,
-        lastVersionTag: lastVersionFromTag,
+        lastVersionFromTag: lastVersionFromTag,
         commitCountSinceLastTag: commitCountSinceLastTag,
         branchName,
         branchRule,
@@ -72,7 +72,7 @@ export class SimpleGitVersion {
   }
 
   applyBranchRule(calcInfo: VersionCalculationInfo): void {
-    if (calcInfo.commitCountSinceLastTag === 0) {
+    if (calcInfo.lastTag && calcInfo.commitCountSinceLastTag === 0) {
       return;
     } else {
       calcInfo.version.buildMetaData =

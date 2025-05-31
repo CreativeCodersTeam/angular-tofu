@@ -25,8 +25,10 @@ export class TheBuild extends BuildDefinition {
     private readonly gitVersion: BuildParameter<SimpleGitVersion>
   ) {
     super();
+  }
 
-    this.targets = [this.installDeps, this.setVersion, this.runNxTargets];
+  createTargets(): BuildTarget[] {
+    return [this.installDeps, this.setVersion, this.runNxTargets];
   }
 
   installDeps: BuildTarget = {

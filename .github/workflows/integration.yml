@@ -35,5 +35,3 @@ jobs:
       # When you enable task distribution, run the e2e-ci task instead of e2e
       - run: |
           bash ./build.sh installDeps runNxTargets
-
-          #npx nx affected -t lint test build e2e
