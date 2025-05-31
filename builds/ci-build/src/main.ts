@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { BuildEngineFactory } from './build-it-lib/build-engine';
+import { BuildEngineFactory } from './build-it-lib/runtime/build-engine';
 import { TheBuild } from './the-build';
 import { container } from 'tsyringe';
 

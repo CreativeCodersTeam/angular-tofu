@@ -1,4 +1,4 @@
-import { BuildContext } from "./build-context";
+import { BuildContext } from './runtime/build-context';
 
 export interface BuildTargetResult {
   succeeded: boolean;

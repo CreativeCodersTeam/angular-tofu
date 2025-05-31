@@ -1,6 +1,6 @@
 import { inject, injectable } from 'tsyringe';
-import { CmdExecutor } from './cmd-executor';
-import { BuildLogger } from './build-logger';
+import { CmdExecutor } from '../shell/cmd-executor';
+import { BuildLogger } from '../build-logger';
 
 @injectable()
 export class GitTools {
@@ -34,6 +34,20 @@ export class GitTools {
       ]);
     } catch (error) {
       this.logger.error('Error getting commit count since tag:', error);
+
+      throw error;
+    }
+  }
+
+  async getCurrentBranch() {
+    try {
+      return await this.cmdExecutor.execute('git', [
+        'rev-parse',
+        '--abbrev-ref',
+        'HEAD',
+      ]);
+    } catch (error) {
+      this.logger.error('Error getting current branch:', error);
 
       throw error;
     }

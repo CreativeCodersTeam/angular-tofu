@@ -1,7 +1,7 @@
-import { BuildDefinition, BuildTarget } from './build-definition';
+import { BuildDefinition, BuildTarget } from '../build-definition';
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
-import { BuildLogger } from './build-logger';
+import { BuildLogger } from '../build-logger';
 import { inject, injectable } from 'tsyringe';
 import { BuildContext } from './build-context';
 

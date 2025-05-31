@@ -1,13 +1,13 @@
 import { inject, injectable } from 'tsyringe';
 import { BuildTasks } from '../build-tasks';
 import { BuildLogger } from '../build-logger';
-import { BuildContext } from '../build-context';
-import { CmdExecutor } from '../cmd-executor';
+import { BuildContext } from '../runtime/build-context';
+import { CmdExecutor } from '../shell/cmd-executor';
 
 export class NpmInstallCiOptions {
   legacyPeerDeps: boolean;
 
-  setLegacyPeerDeps(legacyPeerDeps: boolean){
+  setLegacyPeerDeps(legacyPeerDeps: boolean) {
     this.legacyPeerDeps = legacyPeerDeps;
 
     return this;
@@ -16,19 +16,19 @@ export class NpmInstallCiOptions {
 
 @injectable()
 export class NpmTasks extends BuildTasks {
-  constructor(@inject(BuildLogger) logger: BuildLogger,
-              @inject(BuildContext) context: BuildContext,
-              @inject(CmdExecutor) private cmdExecutor: CmdExecutor) {
+  constructor(
+    @inject(BuildLogger) logger: BuildLogger,
+    @inject(BuildContext) context: BuildContext,
+    @inject(CmdExecutor) private cmdExecutor: CmdExecutor
+  ) {
     super(context, logger);
-
   }
 
   async installCi(options: NpmInstallCiOptions) {
-    await this.execute(async buildContext => {
+    await this.execute(async (buildContext) => {
       const args = options.legacyPeerDeps ? ['--legacy-peer-deps'] : [];
 
       await this.cmdExecutor.executeStream('npm ci', args);
     });
-
   }
 }

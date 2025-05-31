@@ -1,8 +1,8 @@
 import { exec } from 'child_process';
 import { promisify } from 'util';
-import { BuildContext } from './build-context';
+import { BuildContext } from '../runtime/build-context';
 import { inject, injectable } from 'tsyringe';
-import { BuildLogger } from './build-logger';
+import { BuildLogger } from '../build-logger';
 import { spawn } from 'node:child_process';
 
 @injectable()
@@ -41,44 +41,36 @@ export class CmdExecutor {
       return true;
     }
 
-    // Kommando und Argumente trennen
     const cmdArgs = args || [];
 
     return new Promise((resolve) => {
-      // Shell-Option true ermöglicht komplexe Befehle
       const childProcess = spawn(command, cmdArgs, {
         shell: true,
-        stdio: ['inherit', 'pipe', 'pipe'], // stdin von parent übernehmen, stdout und stderr pipen
+        stdio: ['inherit', 'pipe', 'pipe'],
       });
 
-      // stdout in Echtzeit zur Konsole streamen
       childProcess.stdout.on('data', (data) => {
         process.stdout.write(data);
       });
 
-      // stderr in Echtzeit zur Konsole streamen
       childProcess.stderr.on('data', (data) => {
         process.stderr.write(data);
       });
 
-      // Auf Beendigung des Prozesses warten
       childProcess.on('close', (code) => {
         const successful = code === 0;
 
         if (!successful) {
           this.logger.error(
-            `Befehl fehlgeschlagen mit Code ${code}: ${command} ${cmdArgs.join(
-              ' '
-            )}`
+            `Command failed with code ${code}: ${command} ${cmdArgs.join(' ')}`
           );
         }
 
         resolve(successful);
       });
 
-      // Fehlerbehandlung für den Prozess selbst
       childProcess.on('error', (error) => {
-        this.logger.error('Fehler beim Ausführen des Befehls:', error);
+        this.logger.error('Error executing command:', error);
         resolve(false);
       });
     });

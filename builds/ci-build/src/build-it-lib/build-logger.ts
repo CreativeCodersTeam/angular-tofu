@@ -1,5 +1,5 @@
 import { inject, singleton } from 'tsyringe';
-import { BuildContext } from './build-context';
+import { BuildContext } from './runtime/build-context';
 
 export enum LogLevel {
   Debug = 1,
@@ -37,6 +37,7 @@ export class BuildLogger {
         break;
     }
   }
+
   log(...args: any[]) {
     if (!this.isLogEnabled) {
       return this;
@@ -47,7 +48,7 @@ export class BuildLogger {
     return this;
   }
 
-  logMany<T>(items: T[], logText: (item: T) => string){
+  logMany<T>(items: T[], logText: (item: T) => string) {
     if (!this.isLogEnabled) {
       return this;
     }

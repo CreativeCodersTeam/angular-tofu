@@ -7,10 +7,10 @@ import {
   singleton,
 } from 'tsyringe';
 import { BuildExecutor, BuildTargetFailedException } from './build-executor';
-import { BuildDefinition } from './build-definition';
-import { BuildLogger } from './build-logger';
-import { BuildParameter } from './build-parameter';
-import { GIT_VERSION_PARAM, SimpleGitVersion } from './simple-git-version';
+import { BuildDefinition } from '../build-definition';
+import { BuildLogger } from '../build-logger';
+import { BuildParameter } from '../build-parameter';
+import { GIT_VERSION_PARAM, SimpleGitVersion } from '../git/simple-git-version';
 import * as process from 'node:process';
 
 @singleton()

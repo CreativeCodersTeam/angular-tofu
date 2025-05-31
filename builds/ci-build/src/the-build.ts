@@ -1,7 +1,7 @@
-import { BuildContext } from './build-it-lib/build-context';
+import { BuildContext } from './build-it-lib/runtime/build-context';
 import { BuildDefinition, BuildTarget } from './build-it-lib/build-definition';
 import { BuildLogger } from './build-it-lib/build-logger';
-import { CmdExecutor } from './build-it-lib/cmd-executor';
+import { CmdExecutor } from './build-it-lib/shell/cmd-executor';
 import { inject, singleton } from 'tsyringe';
 import { NpmInstallCiOptions, NpmTasks } from './build-it-lib/tasks/npm-tasks';
 import { NxTasks } from './build-it-lib/tasks/nx-tasks';
@@ -9,7 +9,7 @@ import { BuildParameter } from './build-it-lib/build-parameter';
 import {
   GIT_VERSION_PARAM,
   SimpleGitVersion,
-} from './build-it-lib/simple-git-version';
+} from './build-it-lib/git/simple-git-version';
 
 @singleton()
 export class TheBuild extends BuildDefinition {
