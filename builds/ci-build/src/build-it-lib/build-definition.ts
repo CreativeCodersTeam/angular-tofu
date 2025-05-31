@@ -17,7 +17,7 @@ export interface BuildTarget {
 
 export abstract class BuildDefinition {
   private readonly targetDepGraph = new DepGraph<BuildTarget>({
-    circular: true,
+    circular: false,
   });
 
   targets: BuildTarget[] = [];

@@ -14,6 +14,16 @@ export class NpmInstallCiOptions {
   }
 }
 
+export class NpmPublishOptions {
+  version: string;
+
+  setVersion(version: string) {
+    this.version = version;
+
+    return this;
+  }
+}
+
 @injectable()
 export class NpmTasks extends BuildTasks {
   constructor(
@@ -29,6 +39,18 @@ export class NpmTasks extends BuildTasks {
       const args = options.legacyPeerDeps ? ['--legacy-peer-deps'] : [];
 
       await this.cmdExecutor.executeStream('npm ci', args);
+    });
+  }
+
+  async publishNpmPackage(options: NpmPublishOptions): Promise<void> {
+    await this.execute(async (buildContext) => {
+      const args = [
+        'publish',
+        '--access=public',
+        `--registry=https://registry.npmjs.org/`,
+      ];
+
+      await this.cmdExecutor.executeStream(`npm ${args.join(' ')}`);
     });
   }
 }

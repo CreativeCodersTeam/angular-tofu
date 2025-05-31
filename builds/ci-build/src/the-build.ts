@@ -3,7 +3,11 @@ import { BuildDefinition, BuildTarget } from './build-it-lib/build-definition';
 import { BuildLogger } from './build-it-lib/build-logger';
 import { CmdExecutor } from './build-it-lib/shell/cmd-executor';
 import { inject, singleton } from 'tsyringe';
-import { NpmInstallCiOptions, NpmTasks } from './build-it-lib/tasks/npm-tasks';
+import {
+  NpmInstallCiOptions,
+  NpmPublishOptions,
+  NpmTasks,
+} from './build-it-lib/tasks/npm-tasks';
 import { NxTasks } from './build-it-lib/tasks/nx-tasks';
 import { BuildParameter } from './build-it-lib/build-parameter';
 import {
@@ -26,7 +30,13 @@ export class TheBuild extends BuildDefinition {
   ) {
     super();
 
-    this.targets = [this.installDeps, this.setVersion, this.runNxTargets];
+    this.targets = [
+      this.installDeps,
+      this.setVersion,
+      this.nxTargets,
+      this.setReleaseVersion,
+      this.publishNpmPackage,
+    ];
     this.initTargets();
   }
 
@@ -57,12 +67,36 @@ export class TheBuild extends BuildDefinition {
     dependsOn: [this.installDeps],
   };
 
-  runNxTargets: BuildTarget = {
-    name: 'runNxTargets',
+  nxTargets: BuildTarget = {
+    name: 'nxTargets',
     execute: async (buildContext) => {
       this.logger.log('GitVersion:', await this.gitVersion.value.getVersion());
-      //await this.nxTasks.runTargetForAffected(['lint', 'test', 'build', 'e2e']);
+      await this.nxTasks.runTargetForAffected(['lint', 'test', 'build', 'e2e']);
     },
     dependsOn: [this.setVersion],
+  };
+
+  setReleaseVersion: BuildTarget = {
+    name: 'setReleaseVersion',
+    execute: async (buildContext) => {
+      this.logger.log('Setting release version');
+      await this.nxTasks.setReleaseVersion(
+        (await this.gitVersion.value.getVersion()).toString()
+      );
+    },
+    dependsOn: [this.nxTargets],
+  };
+
+  publishNpmPackage: BuildTarget = {
+    name: 'publishNpmPackage',
+    execute: async (buildContext) => {
+      this.logger.log('Publishing NPM package');
+      await this.npmTasks.publishNpmPackage(
+        new NpmPublishOptions().setVersion(
+          (await this.gitVersion.value.getVersion()).toString()
+        )
+      );
+    },
+    dependsOn: [this.setReleaseVersion],
   };
 }
