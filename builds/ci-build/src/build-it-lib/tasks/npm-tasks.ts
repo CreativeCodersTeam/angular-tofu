@@ -19,7 +19,7 @@ export class NpmTasks extends BuildTasks {
   constructor(
     @inject(BuildLogger) logger: BuildLogger,
     @inject(BuildContext) context: BuildContext,
-    @inject(CmdExecutor) private cmdExecutor: CmdExecutor
+    @inject(CmdExecutor) private readonly cmdExecutor: CmdExecutor
   ) {
     super(context, logger);
   }

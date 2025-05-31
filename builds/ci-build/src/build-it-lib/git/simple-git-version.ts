@@ -11,6 +11,15 @@ import {
 
 export const GIT_VERSION_PARAM = 'GitVersion';
 
+interface VersionCalculationInfo {
+  lastTag: string;
+  lastVersionTag: string;
+  commitCountSinceLastTag: number;
+  branchName: string;
+  branchRule: GitVersionBranchRule | undefined;
+  version: VersionInfo;
+}
+
 @injectable()
 export class SimpleGitVersion {
   private readonly settings: GitVersionSettings;
@@ -30,8 +39,8 @@ export class SimpleGitVersion {
   async getVersion(): Promise<VersionInfo> {
     try {
       const lastTag = await this.gitTools.getLastVersionTag();
-      const lastVersionTag = lastTag.replace(/^v/, '');
-      const commitCount = Number(
+      const lastVersionFromTag = lastTag.replace(/^v/, '');
+      const commitCountSinceLastTag = Number(
         await this.gitTools.getCommitCountSinceTag(lastTag)
       );
 
@@ -43,13 +52,16 @@ export class SimpleGitVersion {
           `Using branch rule for branch "${branchName}": ${branchRule.regex.toString()}`
         );
       }
-      const newVersion = VersionInfo.parse(lastVersionTag);
+      const newVersion = VersionInfo.parse(lastVersionFromTag);
 
-      this.applyBranchRule(newVersion, branchRule);
-
-      if (commitCount >= 0) {
-        newVersion.buildMetaData = commitCount.toString();
-      }
+      this.applyBranchRule({
+        lastTag,
+        lastVersionTag: lastVersionFromTag,
+        commitCountSinceLastTag: commitCountSinceLastTag,
+        branchName,
+        branchRule,
+        version: newVersion,
+      });
 
       return newVersion;
     } catch (error) {
@@ -59,16 +71,31 @@ export class SimpleGitVersion {
     }
   }
 
-  applyBranchRule(version: VersionInfo, branchRule: GitVersionBranchRule) {
-    if (branchRule) {
-      // this.logger.log(
-      //   `Applying branch rule for branch "${branchRule.branchName}": ${branchRule.regex.toString()}`
-      // );
-      version.prerelease = branchRule.preReleaseTag;
-
-      //version.buildMetaData = branchRule.buildMetaData;
+  applyBranchRule(calcInfo: VersionCalculationInfo): void {
+    if (calcInfo.commitCountSinceLastTag === 0) {
+      return;
     } else {
-      //this.logger.log(`No branch rule found for branch "${version.branch}"`);
+      calcInfo.version.buildMetaData =
+        calcInfo.commitCountSinceLastTag.toString();
+    }
+
+    if (calcInfo.branchRule) {
+      calcInfo.version.prerelease = calcInfo.branchRule.preReleaseTag;
+
+      switch (calcInfo.branchRule.increment) {
+        case 'major':
+          calcInfo.version.major++;
+          calcInfo.version.minor = 0;
+          calcInfo.version.patch = 0;
+          break;
+        case 'minor':
+          calcInfo.version.minor++;
+          calcInfo.version.patch = 0;
+          break;
+        default:
+          calcInfo.version.patch++;
+          break;
+      }
     }
   }
 }
