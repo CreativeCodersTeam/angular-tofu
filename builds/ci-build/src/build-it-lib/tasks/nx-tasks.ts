@@ -29,4 +29,15 @@ export class NxTasks extends BuildTasks {
   async setReleaseVersion(version: string) {
     return this.executeNxCommand(`release version  ${version}`);
   }
+
+  async releaseAndPublish(projectName: string, access: string) {
+    //run angular-tofu:nx-release-publish --access public
+    const args = [
+      'run',
+      `${projectName}:nx-release-publish`,
+      `--access ${access}`,
+      //'--registry=https://registry.npmjs.org/',
+    ];
+    return this.executeNxCommand(args.join(' '));
+  }
 }

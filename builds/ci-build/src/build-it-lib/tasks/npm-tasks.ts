@@ -47,7 +47,7 @@ export class NpmTasks extends BuildTasks {
       const args = [
         'publish',
         '--access=public',
-        `--registry=https://registry.npmjs.org/`,
+        //`--registry=https://registry.npmjs.org/`,
       ];
 
       await this.cmdExecutor.executeStream(`npm ${args.join(' ')}`);
