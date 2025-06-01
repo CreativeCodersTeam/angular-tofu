@@ -65,7 +65,7 @@ export class SimpleGitVersion {
 
       return newVersion;
     } catch (error) {
-      console.error('Error getting version:', error);
+      this.logger.error('Error getting version:', error);
 
       throw error;
     }
