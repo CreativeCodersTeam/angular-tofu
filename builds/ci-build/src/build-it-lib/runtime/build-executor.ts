@@ -74,7 +74,7 @@ export class BuildExecutor {
         return true;
       }
 
-      //await buildTarget.execute(this.buildContext);
+      await buildTarget.execute(this.buildContext);
 
       return true;
     } catch (error) {

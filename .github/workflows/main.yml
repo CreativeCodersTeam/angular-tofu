@@ -37,7 +37,7 @@ jobs:
       - name: Publish to npm
         if: github.ref == 'refs/heads/main' # Nur auf dem main-Branch
         run: |
-          bash ./build.sh installDeps runNxTargets
+          bash ./build.sh nxTargets
 
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }} # NPM-Token aus GitHub Secrets
