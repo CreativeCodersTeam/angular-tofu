@@ -49,6 +49,11 @@
       "cache": true,
       "dependsOn": ["^build"],
       "inputs": ["production", "^production"]
+    },
+    "@nx/esbuild:esbuild": {
+      "cache": true,
+      "dependsOn": ["^build"],
+      "inputs": ["production", "^production"]
     }
   },
   "plugins": [
@@ -81,6 +86,7 @@
     }
   },
   "release": {
+    "projects": ["angular-tofu"],
     "version": {
       "preVersionCommand": "npx nx run-many -t build"
     }
