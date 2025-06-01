@@ -18,6 +18,7 @@ export class NxTasks extends BuildTasks {
   }
 
   async executeNxCommand(command: string) {
+    this.logger.log(`Executing Nx command: ${command}`);
     return await this.cmdExecutor.executeStream(`npx nx ${command}`);
   }
 
