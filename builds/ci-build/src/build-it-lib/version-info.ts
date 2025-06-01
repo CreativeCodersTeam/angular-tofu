@@ -17,9 +17,9 @@ export class VersionInfo {
     const [major, minor, patch] = versionNumberPart.split('.').map(Number);
 
     return new VersionInfo(
-      major,
-      minor,
-      patch,
+      major ?? 0,
+      minor ?? 0,
+      patch ?? 0,
       prereleasePart,
       buildMetaDataPart
     );
