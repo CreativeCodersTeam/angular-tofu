@@ -27,7 +27,9 @@ export class NxTasks extends BuildTasks {
   }
 
   async setReleaseVersion(version: string) {
-    return this.executeNxCommand(`release version  ${version}`);
+    return this.executeNxCommand(
+      `release version  ${version} --stage-changes=false --git-commit=false`
+    );
   }
 
   async releaseAndPublish(projectName: string, access: string) {
