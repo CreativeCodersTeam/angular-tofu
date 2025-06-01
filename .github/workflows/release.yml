@@ -40,34 +40,34 @@ jobs:
       # - run: npx nx-cloud record -- echo Hello World
       # Nx Affected runs only tasks affected by the changes in this PR/commit. Learn more: https://nx.dev/ci/features/affected
       # When you enable task distribution, run the e2e-ci task instead of e2e
-      - run: npx nx affected -t lint test build e2e
-
-      - name: Get version from git tags
-        id: get-version
-        uses: ./.github/workflows/actions/get-version-from-git
+      #      - run: npx nx affected -t lint test build e2e
+      #
+      #      - name: Get version from git tags
+      #        id: get-version
+      #        uses: ./.github/workflows/actions/get-version-from-git
 
       - name: Publish to npm
         run: |
+          bash ./build.sh publishNpmPackage
 
-
-          LATEST_TAG=$(git describe --tags --abbrev=0)
-          echo "Last Tag: $LATEST_TAG"
-
-          version=${LATEST_TAG#v}
-
-          #read version from tag
-          #TAG=${GITHUB_REF#refs/tags/v}
-
-          BUILD_RUN=${{ github.run_number }}
-
-          IFS='.' read -r -a VERSION_PARTS <<< "$version"
-
-          NEW_VERSION="${VERSION_PARTS[0]}.${VERSION_PARTS[1]}.${VERSION_PARTS[2]}-prerelease+$BUILD_RUN"
-
-          echo "New version: $NEW_VERSION"
-
-          npx nx release version ${NEW_VERSION}
-
-          npx nx run angular-tofu:nx-release-publish --access public
+        #          LATEST_TAG=$(git describe --tags --abbrev=0)
+        #          echo "Last Tag: $LATEST_TAG"
+        #
+        #          version=${LATEST_TAG#v}
+        #
+        #          #read version from tag
+        #          #TAG=${GITHUB_REF#refs/tags/v}
+        #
+        #          BUILD_RUN=${{ github.run_number }}
+        #
+        #          IFS='.' read -r -a VERSION_PARTS <<< "$version"
+        #
+        #          NEW_VERSION="${VERSION_PARTS[0]}.${VERSION_PARTS[1]}.${VERSION_PARTS[2]}-prerelease+$BUILD_RUN"
+        #
+        #          echo "New version: $NEW_VERSION"
+        #
+        #          npx nx release version ${NEW_VERSION}
+        #
+        #          npx nx run angular-tofu:nx-release-publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }} # NPM-Token aus GitHub Secrets
