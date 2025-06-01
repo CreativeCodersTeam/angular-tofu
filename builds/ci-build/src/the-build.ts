@@ -91,11 +91,11 @@ export class TheBuild extends BuildDefinition {
     name: 'publishNpmPackage',
     execute: async (buildContext) => {
       this.logger.log('Publishing NPM package');
-      await this.npmTasks.publishNpmPackage(
-        new NpmPublishOptions().setVersion(
-          (await this.gitVersion.value.getVersion()).toString()
-        )
-      );
+      // await this.npmTasks.publishNpmPackage(
+      //   new NpmPublishOptions().setVersion(
+      //     (await this.gitVersion.value.getVersion()).toString()
+      //   )
+      // );
     },
     dependsOn: [this.setReleaseVersion],
   };
