@@ -89,6 +89,6 @@ export class TheBuild extends BuildDefinition {
       this.logger.log('Publishing NPM package');
       await this.nxTasks.releaseAndPublish('angular-tofu', 'public');
     },
-    dependsOn: [this.setReleaseVersion],
+    dependsOn: [this.nxTargets],
   };
 }
