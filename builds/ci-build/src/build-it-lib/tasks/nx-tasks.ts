@@ -27,6 +27,11 @@ export class NxTasks extends BuildTasks {
     return this.executeNxCommand(`affected -t ${targets.join(' ')} ${baseArg}`);
   }
 
+  async runTargetsForAll(targets: string[]) {
+    const baseArg = this.base ? `--base=${this.base}` : '';
+    return this.executeNxCommand(`run-many -t ${targets.join(' ')} ${baseArg}`);
+  }
+
   async setReleaseVersion(version: string) {
     return this.executeNxCommand(
       `release version  ${version} --stage-changes=false --git-commit=false`
@@ -34,11 +39,11 @@ export class NxTasks extends BuildTasks {
   }
 
   async releaseAndPublish(projectName: string, access: string) {
-    //run angular-tofu:nx-release-publish --access public
     const args = [
       'run',
       `${projectName}:nx-release-publish`,
       `--access ${access}`,
+      '--dryRun',
       //'--registry=https://registry.npmjs.org/',
     ];
     return this.executeNxCommand(args.join(' '));
