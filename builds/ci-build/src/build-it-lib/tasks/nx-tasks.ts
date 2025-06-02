@@ -46,6 +46,11 @@ export class NxTasks extends BuildTasks {
       '--dryRun',
       //'--registry=https://registry.npmjs.org/',
     ];
+
+    if (this.context.dryRun) {
+      args.push('--dry-run');
+    }
+
     return this.executeNxCommand(args.join(' '));
   }
 }
