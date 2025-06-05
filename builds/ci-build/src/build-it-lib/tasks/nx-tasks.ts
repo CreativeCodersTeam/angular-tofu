@@ -18,12 +18,18 @@ export class NxTasks extends BuildTasks {
   }
 
   async executeNxCommand(command: string) {
+    this.logger.log(`Executing Nx command: ${command}`);
     return await this.cmdExecutor.executeStream(`npx nx ${command}`);
   }
 
   async runTargetForAffected(targets: string[]) {
     const baseArg = this.base ? `--base=${this.base}` : '';
     return this.executeNxCommand(`affected -t ${targets.join(' ')} ${baseArg}`);
+  }
+
+  async runTargetsForAll(targets: string[]) {
+    const baseArg = this.base ? `--base=${this.base}` : '';
+    return this.executeNxCommand(`run-many -t ${targets.join(' ')} ${baseArg}`);
   }
 
   async setReleaseVersion(version: string) {
@@ -33,13 +39,18 @@ export class NxTasks extends BuildTasks {
   }
 
   async releaseAndPublish(projectName: string, access: string) {
-    //run angular-tofu:nx-release-publish --access public
     const args = [
       'run',
       `${projectName}:nx-release-publish`,
       `--access ${access}`,
+      '--dryRun',
       //'--registry=https://registry.npmjs.org/',
     ];
+
+    if (this.context.dryRun) {
+      args.push('--dry-run');
+    }
+
     return this.executeNxCommand(args.join(' '));
   }
 }

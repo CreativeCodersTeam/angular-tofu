@@ -78,7 +78,7 @@ export class TheBuild extends BuildDefinition {
     name: 'nxTargets',
     execute: async (buildContext) => {
       this.logger.log('GitVersion:', await this.gitVersion.value.getVersion());
-      await this.nxTasks.runTargetForAffected(['lint', 'test', 'build', 'e2e']);
+      await this.nxTasks.runTargetsForAll(['lint', 'test', 'build', 'e2e']);
     },
     dependsOn: [this.setReleaseVersion],
   };

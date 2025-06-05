@@ -47,6 +47,8 @@ export class BuildExecutor {
   }
 
   private async runBuild(buildDefinition: BuildDefinition, targets: string[]) {
+    this.logger.log('Is running on CI build server:', this.buildContext.isCI);
+
     const buildTargets = this.findBuildTargets(buildDefinition, targets);
 
     this.buildContext.targets = buildTargets.map((t) => t.name);
