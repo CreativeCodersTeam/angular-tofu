@@ -56,8 +56,8 @@ export class SimpleGitVersion {
 
       this.applyBranchRule({
         lastTag,
-        lastVersionFromTag: lastVersionFromTag,
-        commitCountSinceLastTag: commitCountSinceLastTag,
+        lastVersionFromTag,
+        commitCountSinceLastTag,
         branchName,
         branchRule,
         version: newVersion,

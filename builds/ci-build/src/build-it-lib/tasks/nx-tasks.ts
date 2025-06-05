@@ -43,8 +43,6 @@ export class NxTasks extends BuildTasks {
       'run',
       `${projectName}:nx-release-publish`,
       `--access ${access}`,
-      '--dryRun',
-      //'--registry=https://registry.npmjs.org/',
     ];
 
     if (this.context.dryRun) {
