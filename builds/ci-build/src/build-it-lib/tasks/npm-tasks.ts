@@ -38,7 +38,11 @@ export class NpmTasks extends BuildTasks {
     await this.execute(async (buildContext) => {
       const args = options.legacyPeerDeps ? ['--legacy-peer-deps'] : [];
 
-      await this.cmdExecutor.executeStream('npm ci', args);
+      if (this.context.isCI) {
+        await this.cmdExecutor.executeStream('npm ci', args);
+      } else {
+        await this.cmdExecutor.executeStream('npm install');
+      }
     });
   }
 
