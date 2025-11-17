@@ -24,8 +24,8 @@ runs:
         BUILD_RUN=${{ github.run_number }}
 
         # Increment the patch version
-        if [ ${#VERSION_PARTS[@]} -eq 3 ]; then
-          version="${VERSION_PARTS[0]}.${VERSION_PARTS[1]}.${VERSION_PARTS[2]}.$BUILD_RUN"
+        if [ ${#VERSION_PARTS[@]} -eq 2 ]; then
+          version="${VERSION_PARTS[0]}.${VERSION_PARTS[1]}.$BUILD_RUN"
         else
           echo "Error: Invalid version format. Expected 'x.y.z'."
           exit 1
