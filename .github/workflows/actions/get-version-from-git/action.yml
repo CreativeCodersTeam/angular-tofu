@@ -28,7 +28,7 @@ runs:
 
         # Increment the patch version
         if [ ${#VERSION_PARTS[@]} -eq 2 ]; then
-          version="${VERSION_PARTS[0]}.${VERSION_PARTS[1]}.commitCountSinceTag"
+          version="${VERSION_PARTS[0]}.${VERSION_PARTS[1]}.${commitCountSinceTag}"
         else
           echo "Error: Invalid version format. Expected 'x.y.z'."
           exit 1
