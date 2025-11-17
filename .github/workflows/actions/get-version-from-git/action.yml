@@ -23,9 +23,12 @@ runs:
         IFS='.' read -r -a VERSION_PARTS <<< "$version"
         BUILD_RUN=${{ github.run_number }}
 
+        commitCountSinceTag=$(git rev-list --count ${latest_tag}..HEAD 2>/dev/null || echo 0)
+        echo "commitCountSinceTag=${commitCountSinceTag}"
+
         # Increment the patch version
         if [ ${#VERSION_PARTS[@]} -eq 2 ]; then
-          version="${VERSION_PARTS[0]}.${VERSION_PARTS[1]}.$BUILD_RUN"
+          version="${VERSION_PARTS[0]}.${VERSION_PARTS[1]}.commitCountSinceTag"
         else
           echo "Error: Invalid version format. Expected 'x.y.z'."
           exit 1
