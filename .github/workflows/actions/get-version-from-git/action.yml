@@ -15,8 +15,10 @@ runs:
         # Get latest tag
         latest_tag=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
 
+        echo "latest_tag=${latest_tag}"
         # Remove 'v' prefix if present
         version=${latest_tag#v}
+        echo "version=${version}"
 
         IFS='.' read -r -a VERSION_PARTS <<< "$version"
         BUILD_RUN=${{ github.run_number }}
