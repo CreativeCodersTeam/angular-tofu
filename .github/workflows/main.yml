@@ -19,16 +19,9 @@ jobs:
           fetch-depth: 0
           fetch-tags: 'true'
 
-      # This enables task distribution via Nx Cloud
-      # Run this command as early as possible, before dependencies are installed
-      # Learn more at https://nx.dev/ci/reference/nx-cloud-cli#npx-nxcloud-startcirun
-      # Uncomment this line to enable task distribution
-      # - run: npx nx-cloud start-ci-run --distribute-on="3 linux-medium-js" --stop-agents-after="e2e-ci"
-
-      # Cache node_modules
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
           cache: 'npm'
 
       - run: npm ci --legacy-peer-deps
@@ -37,7 +30,7 @@ jobs:
       - name: Publish to npm
         if: github.ref == 'refs/heads/main' # Nur auf dem main-Branch
         run: |
-          bash ./build.sh nxTargets
+          #bash ./build.sh nxTargets
 
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }} # NPM-Token aus GitHub Secrets

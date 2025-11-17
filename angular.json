@@ -1,0 +1,122 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "angular-tofu": {
+      "projectType": "library",
+      "root": "projects/angular-tofu",
+      "sourceRoot": "projects/angular-tofu/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:ng-packagr",
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/angular-tofu/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/angular-tofu/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular/build:karma",
+          "options": {
+            "tsConfig": "projects/angular-tofu/tsconfig.spec.json"
+          }
+        }
+      }
+    },
+    "angular-tofu-showcase": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "projects/angular-tofu-showcase",
+      "sourceRoot": "projects/angular-tofu-showcase/src",
+      "prefix": "ats",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:application",
+          "options": {
+            "browser": "projects/angular-tofu-showcase/src/main.ts",
+            "polyfills": [
+            ],
+            "tsConfig": "projects/angular-tofu-showcase/tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "projects/angular-tofu-showcase/public"
+              }
+            ],
+            "styles": [
+              "projects/angular-tofu-showcase/src/styles.scss",
+              "@angular/material/prebuilt-themes/azure-blue.css"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kB",
+                  "maximumError": "1MB"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "4kB",
+                  "maximumError": "8kB"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular/build:dev-server",
+          "configurations": {
+            "production": {
+              "buildTarget": "angular-tofu-showcase:build:production"
+            },
+            "development": {
+              "buildTarget": "angular-tofu-showcase:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular/build:extract-i18n"
+        },
+        "test": {
+          "builder": "@angular/build:karma",
+          "options": {
+            "polyfills": [
+            ],
+            "tsConfig": "projects/angular-tofu-showcase/tsconfig.spec.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "projects/angular-tofu-showcase/public"
+              }
+            ],
+            "styles": [
+              "projects/angular-tofu-showcase/src/styles.scss"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

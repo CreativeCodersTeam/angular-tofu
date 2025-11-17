@@ -1,0 +1,49 @@
+<div id="tofu-large-nav-tree-container">
+  @for (entry of navEntries; track entry) {
+    <mat-nav-list>
+      @if (entry.entries) {
+        <ng-container>
+          <ng-container *ngTemplateOutlet="defaultFolderTemplate; context: { $implicit: entry}"></ng-container>
+        </ng-container>
+      } @else {
+        <ng-container>
+          <ng-container *ngTemplateOutlet="defaultItemTemplate; context: { $implicit: entry}"></ng-container>
+        </ng-container>
+      }
+    </mat-nav-list>
+  }
+
+</div>
+
+<ng-template #defaultItemTemplate let-item>
+  <a mat-list-item [routerLink]="item.route" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}">
+    @if (item.icon) {
+      <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
+    }
+    {{ item.title }}
+  </a>
+</ng-template>
+
+<ng-template #defaultFolderTemplate let-folder>
+  <mat-expansion-panel id="tofu-navigation-folder-container" class="mat-elevation-z0 navigation-expansion-panel">
+    <mat-expansion-panel-header>
+      <mat-panel-title style="padding: 0 !important;">
+        @if (folder.icon) {
+          <mat-icon>{{ folder.icon }}</mat-icon>
+        }
+        <span class="nav-section-title">{{ folder.title }}</span>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <mat-nav-list>
+      @for (childItem of folder.entries; track childItem) {
+        <a mat-list-item [routerLink]="childItem.route"
+           routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}">
+          @if (childItem.icon) {
+            <mat-icon matListItemIcon style="padding-left: 8px">{{ childItem.icon }}</mat-icon>
+          }
+          <span class="nav-item-label">{{ childItem.title }}</span>
+        </a>
+      }
+    </mat-nav-list>
+  </mat-expansion-panel>
+</ng-template>
