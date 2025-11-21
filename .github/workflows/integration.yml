@@ -29,5 +29,13 @@ jobs:
 
       - uses: ./.github/workflows/actions/get-version-from-git
 
-      - run: |
-          #bash ./build.sh nxTargets
+      - name: Build projects
+        run: |
+          npm run build angular-tofu
+          npm run build angular-tofu-showcase
+
+      - name: Run unit tests (headless)
+        env:
+          CI: 'true'
+        run: |
+          npm run test -- --watch=false --browsers=ChromeHeadless --code-coverage
