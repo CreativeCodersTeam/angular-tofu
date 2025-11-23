@@ -2,6 +2,7 @@ import {Route} from '@angular/router';
 import {MainViewComponent} from './main-view/main-view.component';
 import {AboutComponent} from './about/about.component';
 import {SettingsViewComponent} from './settings-view/settings-view.component';
+import {MoreComponent} from "./more-component/more-component";
 
 export const appRoutes: Route[] = [
   {
@@ -18,6 +19,6 @@ export const appRoutes: Route[] = [
   },
   {
     path: 'about2',
-    component: AboutComponent,
+    component: MoreComponent,
   },
 ];

@@ -1,20 +1,22 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {MainViewComponent} from './main-view.component';
+
+import {MoreComponent} from './more-component';
 import {provideZonelessChangeDetection} from "@angular/core";
 
-describe('MainViewComponent', () => {
-  let component: MainViewComponent;
-  let fixture: ComponentFixture<MainViewComponent>;
+describe('MoreComponent', () => {
+  let component: MoreComponent;
+  let fixture: ComponentFixture<MoreComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MainViewComponent],
+      imports: [MoreComponent],
       providers: [
         provideZonelessChangeDetection()
       ],
-    }).compileComponents();
+    })
+      .compileComponents();
 
-    fixture = TestBed.createComponent(MainViewComponent);
+    fixture = TestBed.createComponent(MoreComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
