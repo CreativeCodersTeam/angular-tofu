@@ -22,10 +22,9 @@ runs:
 
         cd "$ROOT_DIR"
 
-        echo "Version set to:"
-        cat ./dist/angular-tofu/package.json | jq '.version'
-
         echo "Building projects..."
         npm run build angular-tofu
         npm run build angular-tofu-showcase
 
+        echo "angular-tofu library version set to:"
+        cat ./dist/angular-tofu/package.json | jq '.version'
