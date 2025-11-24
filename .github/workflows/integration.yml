@@ -19,19 +19,23 @@ jobs:
           fetch-depth: 0
           fetch-tags: 'true'
 
-      # Cache node_modules
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
           cache: 'npm'
 
       - run: npm ci --legacy-peer-deps
-      #- run: npx playwright install --with-deps
-      - uses: nrwl/nx-set-shas@v4
 
-      # Prepend any command with "nx-cloud record --" to record its logs to Nx Cloud
-      # - run: npx nx-cloud record -- echo Hello World
-      # Nx Affected runs only tasks affected by the changes in this PR/commit. Learn more: https://nx.dev/ci/features/affected
-      # When you enable task distribution, run the e2e-ci task instead of e2e
-      - run: |
-          bash ./build.sh nxTargets
+      - uses: ./.github/workflows/actions/get-version-from-git
+        id: get-version
+
+      - name: Build projects
+        uses: ./.github/workflows/actions/build-projects
+        with:
+          version: ${{ steps.get-version.outputs.version }}
+
+      - name: Run unit tests (headless)
+        env:
+          CI: 'true'
+        run: |
+          npm run test -- --watch=false --browsers=ChromeHeadless --code-coverage

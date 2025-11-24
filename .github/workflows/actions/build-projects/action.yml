@@ -1,0 +1,30 @@
+name: Build Projects
+
+inputs:
+  version:
+    description: 'The version to build'
+    required: true
+
+runs:
+  using: 'composite'
+  steps:
+    - id: get-version
+      shell: bash
+      run: |
+        VERSION="${{ inputs.version }}"
+        echo "Building projects with version: $VERSION"
+
+        ROOT_DIR=$(pwd)
+        cd projects/angular-tofu
+
+        # Set the version in package.json files
+        npm version "$VERSION" --no-git-tag-version
+
+        cd "$ROOT_DIR"
+
+        echo "Building projects..."
+        npm run build angular-tofu
+        npm run build angular-tofu-showcase
+
+        echo "angular-tofu library version set to:"
+        cat ./dist/angular-tofu/package.json | jq '.version'

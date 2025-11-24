@@ -1,0 +1,24 @@
+import {Route} from '@angular/router';
+import {MainViewComponent} from './main-view/main-view.component';
+import {AboutComponent} from './about/about.component';
+import {SettingsViewComponent} from './settings-view/settings-view.component';
+import {MoreComponent} from "./more-component/more-component";
+
+export const appRoutes: Route[] = [
+  {
+    path: '',
+    component: MainViewComponent,
+  },
+  {
+    path: 'settings',
+    component: SettingsViewComponent,
+  },
+  {
+    path: 'about',
+    component: AboutComponent,
+  },
+  {
+    path: 'about2',
+    component: MoreComponent,
+  },
+];

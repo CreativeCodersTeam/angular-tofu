@@ -1,0 +1,11 @@
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'ats-more-component',
+  imports: [],
+  templateUrl: './more-component.html',
+  styleUrl: './more-component.scss',
+})
+export class MoreComponent {
+
+}
