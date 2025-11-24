@@ -19,7 +19,6 @@ jobs:
           fetch-depth: 0
           fetch-tags: 'true'
 
-      # Cache node_modules
       - uses: actions/setup-node@v4
         with:
           node-version: 24
@@ -27,9 +26,25 @@ jobs:
           registry-url: https://registry.npmjs.org/
 
       - run: npm ci --legacy-peer-deps
-      - run: npx playwright install --with-deps
-      - name: Publish to npm
-        run: |
-          bash ./build.sh publishNpmPackage
+
+      - uses: ./.github/workflows/actions/get-version-from-git
+        id: get-version
+
+      - name: Build projects
+        uses: ./.github/workflows/actions/build-projects
+        with:
+          version: ${{ steps.get-version.outputs.version }}
+
+      - name: Run unit tests (headless)
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }} # NPM-Token aus GitHub Secrets
+          CI: 'true'
+        run: |
+          npm run test -- --watch=false --browsers=ChromeHeadless --code-coverage
+
+      - name: Publish angular-tofu library to NPM
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          cd dist/angular-tofu
+
+          npm publish --access public

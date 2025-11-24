@@ -25,12 +25,18 @@ jobs:
           cache: 'npm'
 
       - run: npm ci --legacy-peer-deps
-      - uses: nrwl/nx-set-shas@v4
 
-      - name: Publish to npm
-        if: github.ref == 'refs/heads/main' # Nur auf dem main-Branch
-        run: |
-          #bash ./build.sh nxTargets
+      - uses: ./.github/workflows/actions/get-version-from-git
+        id: get-version
 
+      - name: Build projects
+        uses: ./.github/workflows/actions/build-projects
+        with:
+          version: ${{ steps.get-version.outputs.version }}
+
+      - name: Run unit tests (headless)
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }} # NPM-Token aus GitHub Secrets
+          CI: 'true'
+        run: |
+          npm run test -- --watch=false --browsers=ChromeHeadless --code-coverage
+

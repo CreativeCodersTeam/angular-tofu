@@ -19,7 +19,6 @@ jobs:
           fetch-depth: 0
           fetch-tags: 'true'
 
-      # Cache node_modules
       - uses: actions/setup-node@v4
         with:
           node-version: 24
@@ -30,9 +29,9 @@ jobs:
       - uses: ./.github/workflows/actions/get-version-from-git
 
       - name: Build projects
-        run: |
-          npm run build angular-tofu
-          npm run build angular-tofu-showcase
+        uses: ./.github/workflows/actions/build-projects
+        with:
+          version: ${{ steps.get-version.outputs.version }}
 
       - name: Run unit tests (headless)
         env:
