@@ -27,6 +27,7 @@ jobs:
       - run: npm ci --legacy-peer-deps
 
       - uses: ./.github/workflows/actions/get-version-from-git
+        id: get-version
 
       - name: Build projects
         uses: ./.github/workflows/actions/build-projects
